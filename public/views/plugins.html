@@ -1,0 +1,54 @@
+<div class="section-header">
+<h1>Selecting plugins</h1>
+</div>
+
+<section class="content">
+  <header class="content-header">
+    The following list contains all plugins that pagerduty supports at the current time. Enable those you wish to use and fill in settings if needed.
+  </header>
+  <ul id="plugin-list" class="paragraph">
+    <li class="panel panel-default" ng-repeat="plugin in plugins.plugins">
+      <div class="panel-heading">
+        <a href class="accordion-toggle" ng-click="plugin.enabled=!plugin.enabled">
+          <h4 class="panel-title">
+            <!-- TODO: disable if some requirement not met -->
+            <span>
+              ​<span class="plugin-status plugin-enabled" ng-show="plugin.enabled">Enabled</span>​<span class="plugin-status plugin-disabled" ng-hide="plugin.enabled">Disabled</span>​{{ plugin.name }}
+            </span>
+
+            <span class="description" ng-show="plugin.description">
+              - {{ plugin.description }}
+            </span>
+          </h4>
+        </a>
+      </div>
+      <div class="panel-collapse row equal row-eq-height" ng-show="plugin.enabled">
+        <div class="panel-body col-xs-12 col-sm-12 col-md-6" >
+          <p ng-repeat="field in plugin.required_fields" ng-show="plugin.required_fields">
+            <label class="control-label">{{ field }}</label> 
+            <input ng-model="plugin.settings[field]" class="form-control short"/>
+          </p>
+          <p ng-hide="plugin.required_fields" class="empty-setup">
+            Nothing to configure!
+          </p>
+        </div>
+        <div class="panel-body examples col-xs-12 col-sm-12 col-md-6" ng-class="{'none': !plugin.examples}">
+          <div ng-repeat="example in plugin.examples">
+            > {{ bot.name }}: {{ example }}
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<div class="continue-bar">
+  <a href ng-click="goTo('/bot-setup')" 
+    class="btn btn-primary">
+    Back
+  </a>
+  <a href ng-click="goTo('/user-aliases')" 
+    class="btn btn-primary pull-right">
+    Continue
+  </a>
+</div>

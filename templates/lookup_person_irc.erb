@@ -1,0 +1,7 @@
+<% if time.nil? %>
+<%= person.name %> is not scheduled to go on <%= schedule.name %>
+<% elsif time < Time.now %>
+<%= person.name %> is on <%= schedule.name %> now
+<% else %>
+<%= person.name %> goes on call at <%= time %>
+<% end %>

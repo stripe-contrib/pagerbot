@@ -1,0 +1,23 @@
+<% if added_users.empty? && removed_users.empty? && added_schedules.empty? && removed_schedules.empty? %>
+Reload schedules and users, found nothing new.
+<% else %>
+<% unless added_users.empty? %>
+Added users: <%= added_users.map { |m| m.fetch(:name) }.join(", ") %>
+
+<% end %>
+<% unless removed_users.empty? %>
+Removed users: <%= removed_users.map { |m| m.fetch(:name) }.join(", ") %>
+
+<% end %>
+<% unless added_schedules.empty? %>
+Added schedules: <%= added_schedules.map { |m| m.fetch(:name) }.join(", ") %>
+
+<% end %>
+<% unless removed_schedules.empty? %>
+Removed schedules: <%= removed_schedules.map { |m| m.fetch(:name) }.join(", ") %>
+
+<% end %>
+<% unless added_users.empty? && removed_schedules.empty? %>
+You will need to add aliases for the new users/schedules. Use the alias command (see manual) or the web admin interface.
+<% end %>
+<% end %>

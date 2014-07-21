@@ -1,0 +1,26 @@
+{
+  "name": "pagerbot-admin",
+  "version": "0.0.0",
+  "homepage": "https://github.com/stripe/pagerbot",
+  "authors": [
+    "Karl-Aksel Puulmann <karl@stripe.com>"
+  ],
+  "description": "Pagerbot setup admin interface",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.21",
+    "bootstripe": "git+ssh://git@github.com/stripe-internal/bootstripe.git",
+    "angular-animate": "~1.2.22"
+  },
+  "resolutions": {
+    "angular": "~1"
+  }
+}

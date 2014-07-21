@@ -1,0 +1,104 @@
+<div class="section-header">
+<h1>Bot setup</h1>
+</div>
+
+<section class="content">
+  <p class="paragraph">
+    <label class="control-label">Bot name:</label> 
+    <input ng-model="bot.name" class="form-control short" />
+    <span class="input-description">
+      The nickname that the bot will be addressable by.
+    </span>
+  </p>
+  <div class="paragraph">
+    <label class="control-label">Channels:</label> 
+    
+    <ul class="single-list">
+      <li ng-repeat="chan in bot.channels" class="hollow-badge hollow-badge-green">
+        {{chan}} 
+        <a href ng-click="remove_channel(chan, $index)" class="close-button">&times;</a>
+      </li>
+      <a href ng-click="add_channel()" class="hollow-badge hollow-badge-blue">&plus; <!-- Add another --></a>
+      <!-- <li class="hollow-badge-blue">
+        <a href ng-click="">&plus; Add another channel</a>
+      </li> -->
+    </ul>
+    <span class="input-description">
+      Channels that the bot should join. IRC bots may omit the leading # sign.
+    </span>
+  </div>
+
+
+  <div class="topPad paragraph">
+    <label class="control-label">Chat type:</label> 
+    <select class="form-control very-short" ng-model="bot.adapter">
+      <option value="slack">Slack</option>
+      <option value="irc">IRC</option>
+    </select>
+  </div>
+</section>
+
+<div class="section-header" ng-show="bot.adapter == 'slack'">
+<h1>Slack settings</h1>
+</div>
+
+
+<section class="content" ng-show="bot.adapter == 'slack'">
+  <p class="paragraph">
+    <label class="control-label">Webhook token:</label>
+    <input ng-model="bot.slack.webhook_token" class="form-control short" />
+    <span class="input-description">
+      Outgoing webhook integration token used to check if queries really come from slack. If you're logged into slack, you can add one <a href="https://slack.com/services">here</a>.
+      <br />
+      On creation, set channels to <span class="highlight">any</span>, trigger word(s) to <span class="highlight">{{ bot.name }}</span> and URL(s) to <span class="highlight">{{ thisdomain }}</span>.
+    </span>
+  </p>
+  <p class="paragraph">
+    <label class="control-label">API token:</label>
+    <input ng-model="bot.slack.api_token" class="form-control short" />
+    <span class="input-description">
+      Can be created <a href="https://api.slack.com/#auth">here.</a> Used to send private messages.
+    </span>
+  </p>
+</section>
+
+<div class="section-header" ng-show="bot.adapter == 'irc'">
+<h1>IRC settings</h1>
+</div>
+
+<section class="content" ng-show="bot.adapter == 'irc'">
+  <p class="paragraph">
+    <label class="control-label">Password:</label>
+    <input ng-model="bot.irc.bot_password" class="form-control short" type="password" />
+    <span class="input-description">
+      Password for the bot to identify itself with. Leave blank if the nickname is not registered.
+    </span>
+  </p>
+  <p class="paragraph">
+    <label class="control-label">IRC server:</label>
+    <input ng-model="bot.irc.server" required class="form-control short" />
+  </p>
+  <p class="paragraph">
+    <label class="control-label">Port:</label>
+    <input ng-model="bot.irc.port" class="form-control very-short" />
+    <span class="input-description">
+      Port to connect to the irc server. 6697 is default for most servers.
+    </span>
+  </p>
+  <p class="paragraph checkbox">
+    <label class="control-label">
+      <input ng-model="bot.irc.use_ssl" type="checkbox" /> Use ssl to connect to server
+    </label>
+  </p>
+</section>
+
+<div class="continue-bar">
+  <a href ng-click="goTo('/')" 
+    class="btn btn-primary">
+    Back
+  </a>
+  <a href ng-click="goTo('/plugin-setup')" 
+    class="btn btn-primary pull-right">
+    Continue
+  </a>
+</div>

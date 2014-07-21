@@ -1,0 +1,53 @@
+<div class="section-header">
+  <h1>Intro</h1>
+</div>
+
+<section class="content">
+  <p class="paragraph">Congratulations, you're close running your own pagerbot on heroku!</p>
+
+	<div class="paragraph">
+    Before we're done however, we need to set up a few things:
+    <ul class="attribute-listing">
+      <li>Connect to pagerduty.</li>
+      <li>Set up how pagerbot connects to your channels.</li>
+      <li>Select which commands (plugins) pagerbot should answer to.</li>
+      <li>Set up short aliases for coworkers and schedules to refer them by.</li>
+    </ul>
+  <div>
+
+  <p class="paragraph">Navigating through the following pages and setting everything up should take around 8 minutes.</p>
+</section>
+
+<div class="section-header">
+  <h1>Pagerduty setup</h1>
+</div>
+
+<section class="content">
+  <p class="paragraph">
+    <label class="control-label">Pagerduty subdomain:</label> 
+    <input ng-model="pagerduty.subdomain" class="form-control short" />
+    <span class="input-description">
+      Your firms pagerduty subdomain name. Can be found by <a href="https://app.pagerduty.com/accounts/search">logging in.</a> If the url logging is that is my-startup.pagerduty.com, you should fill in in my-startup.
+    </span>
+  </p>
+  <p class="paragraph">
+    <label class="control-label">Pagerduty API key:</label> 
+    <input ng-model="pagerduty.api_key" class="form-control short" />
+    <span class="input-description">
+      Full access API key using which pagerbot would communicate with PagerDuty. Can be created at <a ng-href="https://{{pagerduty.subdomain || 'my-startup'}}.pagerduty.com/api_keys">{{pagerduty.subdomain || "my-startup"}}.pagerduty.com/api_keys</a> (requires admin access).
+    </span>
+  </p>
+  <p class="paragraph">
+    <span ng-show="status == 'saving'" class="status-label status-label-saving">Saving...</span>
+    <span ng-show="status == 'saved' && !can_connect" class="status-label status-label-bad">Cannot connect to pagerduty. Fill the above fields to continue!</span>
+    <span ng-show="status == 'saved' && can_connect" class="status-label status-label-good">Connected to pagerduty!</span>
+  </p>
+</section>
+
+<div class="continue-bar">
+  <a href ng-click="goTo('/bot-setup')" 
+    class="btn btn-primary pull-right"
+    ng-class="{'disabled': !can_connect}">
+    Continue
+  </a>
+</div>

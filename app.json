@@ -1,0 +1,22 @@
+{
+    "name": "Pagerbot",
+    "description": "Bot for managing pagerduty schedules, supports irc and slack.",
+    "website": "https://github.com/stripe/pagerbot",
+    "repository": "https://github.com/macobo/testing-testing-octoman",
+    "success_url": "/",
+    "keywords": [
+        "pagerduty",
+        "stripe",
+        "bot",
+        "irc",
+        "slack",
+        "ruby"
+    ],
+    "addons": [
+        "mongolab",
+        "papertrail"
+    ],
+    "env": {
+        "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-ruby"
+    }
+}

@@ -1,0 +1,7 @@
+<% if time.nil? %>
+<%= person.name %> is not scheduled to go on <%= utilities.display_schedule(schedule) %>.
+<% elsif time < Time.now %>
+<%= person.name %> is on <%= utilities.display_schedule(schedule) %> now.
+<% else %>
+<%= person.name %> goes on call at <%= utilities.display_time time %>. <%= utilities.display_schedule(schedule, 'View Schedule') %>
+<% end %>

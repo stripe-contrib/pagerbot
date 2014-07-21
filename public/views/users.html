@@ -1,0 +1,106 @@
+<div class="section-header">
+<h1>Setting up user aliases</h1>
+</div>
+
+<section class="content">
+  <header class="content-header">
+    <div>Use this page to add new names (aliases) for users pagerbot knows about.</div>
+  </header>
+
+  <div class="paragraph">
+    <div class="alert alert-success" role="alert" ng-repeat="user in users.added">
+      Added new user <strong>{{ user.name }}</strong>!
+    </div>
+    <div class="alert alert-info" role="alert" ng-repeat="user in users.removed">
+      Removed user <strong>{{ user.name }}</strong>!
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href class="accordion-toggle" ng-click="show_mass_add = !show_mass_add">
+          <h4 class="panel-title">
+            Mass add aliases
+          </h4>
+        </a>
+      </div>
+      <div class="panel-collapse" ng-show="!show_mass_add">
+        <div class="panel-body">
+          You can mass add aliases by writing expressions
+          which operate on a user data object and result in an alias. Structure of an user object is shown on the right.
+        </div>
+        <div class="row">
+          <div class="panel-body subsection col-xs-12 col-sm-12 col-md-5 col-lg-4" >
+            <div class="paragraph">
+              <label class="control-label">Expression:</label>
+              <input ng-model="mass.expression" class="form-control short"\>
+              <span class="input-description">
+                Enter a <a href="http://documentcloud.github.io/underscore/#template">underscore.js templating expression</a> which operates on a user object
+                such as the one on the right and yields an alias.
+              </span>
+            </div>
+            <p class="paragraph">
+              Example output: 
+              <span class="highlight">{{ manager.evaluate(mass.expression, users.users[manager.active_row]) }}</span>
+              <span class="input-description">
+                Note that names are treated in a case-insensitive way and empty aliases are ignored.
+              </span>
+            </p>
+            <p class="paragraph">
+              <a class="btn btn-primary" ng-click="manager.mass_add_aliases(mass.expression)">
+                Mass add aliases
+              </a>
+            </p>
+            <p class="paragraph">
+              <a class="btn btn-danger" ng-click="manager.remove_mass_aliases()">
+                Remove mass added aliases
+              </a>
+            </p>
+          </div>
+          <pre class="panel-body subsection examples col-xs-12 col-sm-12 col-md-7 col-lg-8">{{ users.users[manager.active_row] | json }}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="paragraph">
+    <table ng-table="manager.table" class="alias-table table table-condensed table-striped table-hover">
+      <tr ng-repeat="u in $data" 
+        ng-init="real = $index; user = users.users[real]"
+        ng-class="{'active-row': real == manager.active_row}"
+        ng-click="manager.active_row = $index">
+        <td data-title="'ID'" sortable="'id'">
+          {{ user.id }}
+        </td>
+        <td data-title="'Full name'" sortable="'name'">
+          <a ng-href="{{url_base}}/users/{{user.id}}">
+            {{ user.name }}
+          </a>
+        </td>
+        <td data-title="'Email'" sortable="'email'">
+          {{ user.email }}
+        </td>
+        <td data-title="'Aliases'">
+          <ul class="single-list">
+            <!-- Add different color for automatically added aliases -->
+            <li ng-repeat="alias in users.users[real].aliases" class="hollow-badge hollow-badge-green">
+              {{alias.name}} 
+              <a href ng-click="manager.remove_alias(real, $index)" class="close-button">&times;</a>
+            </li>
+          </ul>
+          <a class="hollow-badge hollow-badge-blue" href ng-click="add_alias(real)">&plus;</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<div class="continue-bar">
+  <a href ng-click="goTo('/plugin-setup')" 
+    class="btn btn-primary">
+    Back
+  </a>
+  <a href ng-click="goTo('/schedule-aliases')" 
+    class="btn btn-primary pull-right">
+    Continue
+  </a>
+</div>

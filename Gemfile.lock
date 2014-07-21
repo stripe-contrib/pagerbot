@@ -1,0 +1,107 @@
+PATH
+  remote: .
+  specs:
+    pagerbot (0.0.1)
+      activesupport
+      chronic
+      chronic_duration
+      cinch
+      configatron
+      mailgun-ruby
+      method_decorators
+      mongo
+      rest-client
+      sinatra
+      thin
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (4.0.8)
+      i18n (~> 0.6, >= 0.6.9)
+      minitest (~> 4.2)
+      multi_json (~> 1.3)
+      thread_safe (~> 0.1)
+      tzinfo (~> 0.3.37)
+    ansi (1.4.3)
+    bson (1.8.5)
+    builder (3.2.2)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
+    chronic (0.10.2)
+    chronic_duration (0.10.5)
+      numerizer (~> 0.1.1)
+    cinch (2.1.0)
+    configatron (4.2.0)
+    daemons (1.1.9)
+    dotenv (0.11.1)
+      dotenv-deployment (~> 0.0.2)
+    dotenv-deployment (0.0.2)
+    eventmachine (1.0.3)
+    ffi (1.9.3)
+    hashie (2.0.5)
+    i18n (0.6.11)
+    json (1.8.1)
+    listen (2.7.9)
+      celluloid (>= 0.15.2)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+    mailgun-ruby (1.0.2)
+      json (~> 1.8)
+      rest-client (~> 1.6)
+    metaclass (0.0.4)
+    method_decorators (0.9.5)
+    mime-types (2.3)
+    minitest (4.7.5)
+    minitest-reporters (0.14.23)
+      ansi
+      builder
+      minitest (>= 2.12, < 5.0)
+      powerbar
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
+    mongo (1.8.5)
+      bson (~> 1.8.5)
+    multi_json (1.10.1)
+    netrc (0.7.7)
+    numerizer (0.1.1)
+    powerbar (1.0.11)
+      ansi (~> 1.4.0)
+      hashie (>= 1.1.0)
+    rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
+    rake (10.3.2)
+    rb-fsevent (0.9.4)
+    rb-inotify (0.9.5)
+      ffi (>= 0.5.0)
+    rerun (0.10.0)
+      listen (~> 2.7, >= 2.7.3)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    thin (1.6.2)
+      daemons (>= 1.0.9)
+      eventmachine (>= 1.0.0)
+      rack (>= 1.0.0)
+    thread_safe (0.3.4)
+    tilt (1.4.1)
+    timers (1.1.0)
+    tzinfo (0.3.40)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler
+  dotenv
+  minitest (< 5.0)
+  minitest-reporters
+  mocha
+  pagerbot!
+  rake
+  rerun
