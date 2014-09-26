@@ -2,11 +2,12 @@
     "name": "Pagerbot",
     "description": "Bot for managing pagerduty schedules, supports irc and slack.",
     "website": "https://github.com/stripe/pagerbot",
-    "repository": "https://github.com/macobo/testing-testing-octoman",
+    "repository": "https://github.com/stripe/pagerbot",
     "success_url": "/",
     "keywords": [
         "pagerduty",
         "stripe",
+        "chatbot",
         "bot",
         "irc",
         "slack",
