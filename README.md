@@ -67,7 +67,7 @@ FAQ
 ====
 
 ### Heroku is asking for my credit card! Do I need to pay for this?
-No, running your own pagerbot is free! This happens due to reqiring mongodb free add-on. See the [ verification policy of Heroku](https://devcenter.heroku.com/articles/account-verification#verification-requirement).
+No, running your own pagerbot is free! This is a requirement of the free MongoDB add-on. See the [verification policy of Heroku](https://devcenter.heroku.com/articles/account-verification#verification-requirement).
 
 ### How can I secure the admin interface?
 
