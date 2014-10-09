@@ -23,9 +23,10 @@ module PagerBot
     end
 
     # get list of collection objects (schedules, users) from pagerduty
-    def pd_list_of(collection_name)
+    def pd_list_of(collection_name, pagerduty=nil)
+      pagerduty ||= get_pagerduty
       PagerBot::Utilities
-        .paginate('/'+collection_name, collection_name.to_sym, get_pagerduty)
+        .paginate('/'+collection_name, collection_name.to_sym, pagerduty)
         .values
         .sort_by { |u| u['name'] }
         .map do |member|
