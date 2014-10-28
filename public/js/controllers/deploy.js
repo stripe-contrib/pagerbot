@@ -4,6 +4,9 @@ angular.module('pagerbot-admin')
   .controller('DeployCtrl', function ($scope) {
     $scope.app_name = window.location.hostname.split(".")[0];
     $scope.url_base = "https://dashboard.heroku.com/apps/";
+    if (!window.location.origin)
+      window.location.origin = window.location.protocol+"//"+window.location.host;
+    $scope.app_url = window.location.origin;
     if (!$scope.app_name || window.location.hostname.indexOf("herokuapp.com") < 0) {
       $scope.found_app_name = false;
       $scope.dashboard_url = $scope.url_base;

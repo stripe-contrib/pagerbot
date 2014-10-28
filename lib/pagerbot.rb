@@ -12,6 +12,7 @@ require_relative './pagerbot/pagerduty'
 require_relative './pagerbot/parsing'
 require_relative './pagerbot/action_manager'
 require_relative './pagerbot/slack_adapter'
+require_relative './pagerbot/hipchat_adapter'
 require_relative './pagerbot/irc_adapter'
 require_relative './pagerbot/plugin/plugin_manager'
 
@@ -96,13 +97,17 @@ if __FILE__ == $0
   PagerBot.log.info("Is_admin is "+is_admin.to_s)
   if is_admin
     PagerBot::AdminPage.run!
-  elsif ARGV.first.include?('slack') || ARGV.first.include?('web')
+  elsif ARGV.first.include?('web')
     PagerBot.reload_configuration!
-    PagerBot::SlackAdapter.run!
+    if ARGV.first.include?('slack') || configatron.bot.adapter == 'slack'
+      PagerBot::SlackAdapter.run!
+    elsif ARGV.first.include?('hipchat') || configatron.bot.adapter == 'hipchat'
+      PagerBot::HipchatAdapter.run!
+    end
   elsif ARGV.first.include? 'irc'
     PagerBot.reload_configuration!
     PagerBot::IrcAdapter.run!
   else
-    raise "Could not find adapter #{ARGV.first}. It must be either 'irc' or 'slack'"
+    raise "Could not find adapter #{ARGV.first}. It must be either 'irc', 'slack' or 'hipchat'"
   end
 end
