@@ -92,7 +92,7 @@ module PagerBot::Plugins
       )
 
       log.info "Created incident for #{person.name}. #{incident.inspect}"
-      # RAGE: Of course incident doesn't include the id if the incident created.
+      # RAGE: Of course incident doesn't include the id of the incident created.
       service_url = "#{pagerduty.uri_base}#{@service[:service_url]}"
 
       render "call_person", {person: person, service_url: service_url}
