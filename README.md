@@ -63,6 +63,11 @@ heroku addons:add mongolab:sandbox
 git push heroku master
 ```
 
+For developing new capabilities, PagerDuty has two different APIs:
+
+* The [Integration API](https://developer.pagerduty.com/documentation/integration/events) is a high-availability endpoint for triggering and updating incidents.
+* The [REST API](https://developer.pagerduty.com/documentation/rest) provides CRUD for most PagerDuty account objects, such as users, schedules, escalation policies, etc
+
 FAQ
 ====
 
