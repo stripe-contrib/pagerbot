@@ -5,12 +5,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'pagerbot'
-  spec.version       = '0.0.1'
+  spec.version       = '0.1.0'
   spec.authors       = ['Karl-Aksel Puulmann']
-  spec.email         = ['karl@stripe.com']
+  spec.email         = ['oxymaccy@gmail.com']
   spec.summary       = %q{IRC and Slackbot for PagerDuty.}
   spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = 'https://github.com/stripe/pagerbot'
+  spec.homepage      = 'https://github.com/stripe-contrib/pagerbot'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-reporters'
   spec.add_development_dependency 'mocha'
   spec.add_development_dependency 'dotenv'
+  spec.add_development_dependency 'pry'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'

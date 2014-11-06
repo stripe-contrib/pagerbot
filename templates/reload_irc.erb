@@ -18,6 +18,6 @@ Removed schedules: <%= removed_schedules.map { |m| m.fetch(:name) }.join(", ") %
 
 <% end %>
 <% unless added_users.empty? && removed_schedules.empty? %>
-You will need to add aliases for new users/schedules. Use the alias command (see manual) or the web admin interface.
+You will need to add aliases for the new users/schedules. Use the alias command (see manual) or the web admin interface.
 <% end %>
 <% end %>
