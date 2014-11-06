@@ -12,7 +12,11 @@ module PagerBot::Template
     def render(adapter=nil)
       template_name = @_template_name
       unless adapter.nil?
-        template_name << "_" + adapter.to_s
+        template_name = "#{@_template_name}_#{adapter}"
+      end
+
+      if adapter == :hipchat
+        return render(:slack).split("\n").join("\n<hr>")
       end
       template = PagerBot::Template.fetch_template(template_name)
       # '>' denotes that erb should trim some whitespace
@@ -37,6 +41,13 @@ module PagerBot::Template
     file_path = File.join(templates_dir, template_name+".erb")
 
     @@cache[template_name] = File.read(file_path)
+  end
+
+  def self.template_exists?(template_name)
+    templates_dir = File.expand_path(
+      File.join(File.dirname(__FILE__), "../../templates"))
+    path = File.join(templates_dir, template_name+".erb")
+    File.exist?(path)
   end
 
   def self.render(template_name, variables={})

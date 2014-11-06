@@ -93,8 +93,13 @@ module PagerBot::Utilities
     "http://www.timeanddate.com/worldclock/fixedtime.html?iso=#{str}#hg-wc"
   end
 
-  def self.link_to(link, description)
-    "<#{link}|#{description}>"
+  def self.link_to(link, description, adapter=nil)
+    adapter = PagerBot.action_manager.current_adapter if adapter.nil?
+    if adapter == :hipchat
+      "<a href='#{link}'>#{description}</a>"
+    else
+      "<#{link}|#{description}>"
+    end
   end
 
   def self.display_time(time)

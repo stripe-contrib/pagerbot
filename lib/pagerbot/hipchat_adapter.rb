@@ -169,8 +169,7 @@ module PagerBot
 
     def send_message(message, request_data)
       data = {
-        message: message,
-        message_format: "text"
+        message: message
       }
       url = "https://api.hipchat.com/v2/room/#{request_data[:room_name]}/notification"
       send_hipchat_request(data, url)

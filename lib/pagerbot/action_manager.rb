@@ -2,7 +2,7 @@ module PagerBot
   # This class takes action/prepares response based on parsed queries.
   class ActionManager
     extend MethodDecorators
-    attr_reader :pagerduty, :plugin_manager
+    attr_reader :pagerduty, :plugin_manager, :current_adapter
     
     def initialize(options)
       @options = options
@@ -17,6 +17,8 @@ module PagerBot
     #   private_message => "Message to be send in pm"
     # }
     def dispatch(parsed_query, event_data)
+      @current_adapter = event_data[:adapter]
+
       # Try to get answer from plugins
       if parsed_query[:plugin]
         begin
