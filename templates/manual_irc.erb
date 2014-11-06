@@ -1,0 +1,35 @@
+I am <%= name %>. I keep track of the pagers. You can ask me the following:
+
+  *Get command usage:*
+    > help
+
+  *Get more detailed command usage:*
+    > manual
+
+  *List known schedules:*
+    > list
+
+  *List known people:*
+    > people
+
+  *Find out who is on call for a schedule:*
+    who is on SCHEDULE [at TIME]
+    > who is on primary breakage [at 2 pm]
+
+  *Find out when someone is on call:*
+    when [am I | is PERSON] on SCHEDULE
+    > when am I on triage
+    > when is llama on primary breakage
+<% loaded_plugins.each do |name, plugin| %>
+<% next unless plugin.responds_to? :manual %>
+
+  *<%= plugin.manual.fetch(:description) %>*
+<% plugin.manual.fetch(:syntax, []).each do |syntax| %>
+    <%= syntax %>
+
+<% end %>
+<% plugin.manual.fetch(:examples, []).each do |example| %>
+    > <%= example %>
+
+<% end %>
+<% end %>

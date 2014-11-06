@@ -69,69 +69,18 @@ module PagerBot
 
     +PagerBot::Utilities::DispatchMethod
     def manual(query, event_data)
-      manual = <<-EOF
-I am #{@options[:bot][:name]}. I keep track of the pagers. You can ask me the following:
-
-  *Get command usage:*
-    > help
-
-  *Get more detailed command usage:*
-    > manual
-
-  *List known schedules:*
-    > list
-
-  *List known people:*
-    > people
-
-  *Find out who is on call for a schedule:*
-    who is on SCHEDULE [at TIME]
-    > who is on primary breakage [at 2 pm]
-
-  *Find out when someone is on call:*
-    when [am I | is PERSON] on SCHEDULE
-    > when am I on triage
-    > when is llama on primary breakage
-EOF
-
-      plugin_manager.loaded_plugins.each do |name, plugin|
-        if plugin.responds_to? :manual
-          manual << "\n  *#{plugin.manual.fetch(:description)}*"
-          syntax = plugin.manual.fetch(:syntax, []).join("\n    ")
-          examples = plugin.manual.fetch(:examples, []).join("\n    > ")
-          manual << "\n    #{syntax}"
-          manual << "\n    > #{examples}\n"
-        end
-      end
-
       { 
         message: "Sending you the manual in a PM.",
-        private_message: manual
+        private_message: render('manual', loaded_plugins: plugin_manager.loaded_plugins, name: @options[:bot][:name])
       }
     end
 
     +PagerBot::Utilities::DispatchMethod
     def help(query, event_data)
-      help = <<-EOF
-I am #{@options[:bot][:name]}, and I keep track of the pagers. You can ask me the following:
-
-  manual
-  help
-
-  list
-  people
-
-  who is on SCHEDULE [at TIME]
-  when [am I | is PERSON] on SCHEDULE
-EOF
-      plugin_manager.loaded_plugins.each do |name, plugin|
-        if plugin.responds_to? :manual
-          help << "\n  "
-          help << plugin.manual.fetch(:syntax).join("\n  ")
-        end
-      end
-
-      help
+      render(
+        'help',
+        loaded_plugins: plugin_manager.loaded_plugins,
+        name: @options[:bot][:name])
     end
 
     +PagerBot::Utilities::DispatchMethod

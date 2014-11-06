@@ -1,0 +1,18 @@
+I am <%= name %>, and I keep track of the pagers. You can ask me the following:
+
+  manual
+  help
+
+  list
+  people
+
+  who is on SCHEDULE [at TIME]
+  when [am I | is PERSON] on SCHEDULE
+
+<% loaded_plugins.each do |name, plugin| %>
+<% next unless plugin.responds_to? :manual %>
+<% plugin.manual.fetch(:syntax, []).each do |syntax| %>
+  <%= syntax %>
+
+<% end %>
+<% end %>

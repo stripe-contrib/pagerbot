@@ -15,9 +15,14 @@ module PagerBot::Template
         template_name = "#{@_template_name}_#{adapter}"
       end
 
-      if adapter == :hipchat
-        return render(:slack).split("\n").join("\n<hr>")
+      unless PagerBot::Template.template_exists?(template_name)
+        if adapter == :slack
+          return render(:irc)
+        elsif adapter == :hipchat
+          return render(:slack).split("\n").join("\n<br>")
+        end
       end
+
       template = PagerBot::Template.fetch_template(template_name)
       # '>' denotes that erb should trim some whitespace
       ERB.new(template, nil, '>').result(binding).strip
