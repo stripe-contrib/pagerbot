@@ -368,7 +368,7 @@ label.control-label {
   display: inline
 }
 .form-control.very-short {
-  max-width: 6em;
+  max-width: 8em;
   display: inline
 }
 

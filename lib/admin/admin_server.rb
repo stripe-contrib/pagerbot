@@ -94,7 +94,8 @@ module PagerBot
       },
       slack: {
         emoji: ':frog:'
-      }
+      },
+      hipchat: {}
     }
 
     get '/bot' do
@@ -121,7 +122,7 @@ module PagerBot
       content_type :json
 
       available = PagerBot::PluginManager
-        .available_plugins.sort.map do |name| 
+        .available_plugins.sort.map do |name|
           ret = PagerBot::PluginManager.info name
           plugin = db['plugins'].find_one({name:name})
           if plugin
@@ -135,7 +136,7 @@ module PagerBot
           ret
         end
 
-      { 
+      {
         plugins: available
       }.to_json
     end

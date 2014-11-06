@@ -4,18 +4,18 @@
 
 <section class="content">
   <p class="paragraph">
-    <label class="control-label">Bot name:</label> 
+    <label class="control-label">Bot name:</label>
     <input ng-model="bot.name" class="form-control short" />
     <span class="input-description">
       The nickname that the bot will be addressable by.
     </span>
   </p>
   <div class="paragraph">
-    <label class="control-label">Channels:</label> 
-    
+    <label class="control-label">Channels:</label>
+
     <ul class="single-list">
       <li ng-repeat="chan in bot.channels" class="hollow-badge hollow-badge-green">
-        {{chan}} 
+        {{chan}}
         <a href ng-click="remove_channel(chan, $index)" class="close-button">&times;</a>
       </li>
       <a href ng-click="add_channel()" class="hollow-badge hollow-badge-blue">&plus; <!-- Add another --></a>
@@ -30,10 +30,11 @@
 
 
   <div class="topPad paragraph">
-    <label class="control-label">Chat type:</label> 
+    <label class="control-label">Chat type:</label>
     <select class="form-control very-short" ng-model="bot.adapter">
       <option value="slack">Slack</option>
       <option value="irc">IRC</option>
+      <option value="hipchat">HipChat</option>
     </select>
   </div>
 </section>
@@ -93,11 +94,11 @@
 </section>
 
 <div class="continue-bar">
-  <a href ng-click="goTo('/')" 
+  <a href ng-click="goTo('/')"
     class="btn btn-primary">
     Back
   </a>
-  <a href ng-click="goTo('/plugin-setup')" 
+  <a href ng-click="goTo('/plugin-setup')"
     class="btn btn-primary pull-right">
     Continue
   </a>
