@@ -1,4 +1,4 @@
-PagerBot [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stripe/pagerbot) [![Build Status](https://travis-ci.org/stripe/pagerbot.svg?branch=master)](https://travis-ci.org/stripe/pagerbot)
+PagerBot [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stripe/pagerbot) [![Build Status](https://travis-ci.org/stripe-contrib/pagerbot.svg?branch=master)](https://travis-ci.org/stripe-contrib/pagerbot)
 ========
 
 Pagerbot is a bot that makes managing [PagerDuty](http://www.pagerduty.com/) on-call schedules easier. It currently supports IRC and slack, and can be easily deployed to heroku. 
