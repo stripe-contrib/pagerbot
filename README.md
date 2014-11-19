@@ -1,7 +1,7 @@
 PagerBot [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stripe/pagerbot) [![Build Status](https://travis-ci.org/stripe-contrib/pagerbot.svg?branch=master)](https://travis-ci.org/stripe-contrib/pagerbot)
 ========
 
-Pagerbot is a bot that makes managing [PagerDuty](http://www.pagerduty.com/) on-call schedules easier. It currently supports IRC and slack, and can be easily deployed to heroku. 
+Pagerbot is a bot that makes managing [PagerDuty](http://www.pagerduty.com/) on-call schedules easier. It currently supports IRC and Slack, and can be easily deployed to Heroku. 
 
 Pagerbot uses [Chronic](https://github.com/mojombo/chronic) for natural language date and time parsing.
 
@@ -13,7 +13,7 @@ Sample
 Usage
 ======
 
-The easiest way to get started is to use heroku button above to launch an admin interface for pagerbot, where you need to fill out a few API keys and choose commands (plugins) that pagerbot knows about and responds to.
+The easiest way to get started is to use the Heroku button above to launch an admin interface for pagerbot, where you need to fill out a few API keys and choose commands (plugins) that pagerbot knows about and responds to.
 
 Going through the admin page shouldn't take much longer than 8 minutes. The admin page also contains detailed information on how to make the bot join your channel.
 
@@ -62,6 +62,11 @@ heroku create
 heroku addons:add mongolab:sandbox
 git push heroku master
 ```
+
+For developing new capabilities, PagerDuty has two different APIs:
+
+* The [Integration API](https://developer.pagerduty.com/documentation/integration/events) is a high-availability endpoint for triggering and updating incidents.
+* The [REST API](https://developer.pagerduty.com/documentation/rest) provides CRUD for most PagerDuty account objects, such as users, schedules, escalation policies, etc
 
 FAQ
 ====
