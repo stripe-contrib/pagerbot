@@ -14,8 +14,8 @@ module PagerBot::Plugins
     def self.manual
       {
         description: "Trigger a call to a person",
-        syntax: ["get PERSON [subject SUBJECT]"],
-        examples: ["get karl subject you are needed in warroom"]
+        syntax: ["get PERSON [SUBJECT]"],
+        examples: ["get karl you are needed in warroom"]
       }
     end
 
@@ -25,6 +25,7 @@ module PagerBot::Plugins
 
       person = []
       subject = []
+      implicit_subject = (query[:words] & ['subject', 'because']).empty?
 
       parse_stage = :person
       query[:words].each do |word|
@@ -33,7 +34,11 @@ module PagerBot::Plugins
           parse_stage = :subject
         else
           case parse_stage
-          when :person then person << word
+          when :person
+            person << word
+            if implicit_subject
+              parse_stage = :subject
+            end
           when :subject then subject << word
           end
         end
@@ -70,7 +75,7 @@ module PagerBot::Plugins
       # People still get pinged even if they're not on call,
       # so this is a safety measure.
       to = start + ChronicDuration.parse("5 minutes")
-      
+
       override = pagerduty.post(
         "/schedules/#{@schedule_id}/overrides",
         {

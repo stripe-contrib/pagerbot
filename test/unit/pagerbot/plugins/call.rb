@@ -34,6 +34,18 @@ class CallPlugin < Critic::MockedPagerDutyTest
       assert_equal(expected, got)
     end
 
+    it "should call parse on the plugin with a variant of the syntax" do
+      got = parse("911 sys subject unicorns are attacking", @plugin_manager)
+      expected = {team: "sys", plugin: "call", message: "unicorns are attacking"}
+      assert_equal(expected, got)
+    end
+
+    it "should consider because the same as subject" do
+      got = parse("911 someone else because unicorns are attacking", @plugin_manager)
+      expected = {team: "someone else", plugin: "call", message: "unicorns are attacking"}
+      assert_equal(expected, got)
+    end
+
     it "should call dispatch on the plugin" do
       query = {team: "sys", plugin: "call", message: "everything is on fire"}
 
@@ -48,7 +60,7 @@ class CallPlugin < Critic::MockedPagerDutyTest
       query = {team: "sys", plugin: "call", message: "everything is on fire"}
       @plugin_manager.loaded_plugins['email']
         .expects(:send_email)
-        .with do |email, message, _| 
+        .with do |email, message, _|
           email == "sys@moon.com" && message == "karl in #channel: #{query[:message]}"
         end
 
