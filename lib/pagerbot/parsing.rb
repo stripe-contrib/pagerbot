@@ -1,6 +1,6 @@
 module PagerBot::Parsing
   def self.strip_name(text, nick=nil)
-    text.gsub(/\A@?#{nick}: /, '')
+    text.gsub(/\A(@?#{nick}:|@#{nick}) /, '')
   end
 
   def self.split_text(text)
