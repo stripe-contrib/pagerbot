@@ -31,7 +31,7 @@ class CallPerson < Critic::MockedPagerDutyTest
 
       it 'should parse query in example' do
         got = plugin.parse({
-          command: "get", 
+          command: "get",
           words: "karl subject you are needed in warroom".split
         })
         expected = {person: "karl", subject: "you are needed in warroom"}
@@ -40,12 +40,22 @@ class CallPerson < Critic::MockedPagerDutyTest
 
       it 'should consider because the same as subject' do
         got = plugin.parse({
-          command: "get", 
+          command: "get",
           words: "someone else because you are needed in warroom".split
         })
         expected = {person: "someone else", subject: "you are needed in warroom"}
         assert_equal(expected, got)
       end
+
+      it 'should still parse query when an explicit "subject"/"because" prefix is not present' do
+        got = plugin.parse({
+          command: "get",
+          words: "karl you are needed in warroom".split
+        })
+        expected = {person: "karl", subject: "you are needed in warroom"}
+        assert_equal(expected, got)
+      end
+
     end
 
     describe 'dispatch' do

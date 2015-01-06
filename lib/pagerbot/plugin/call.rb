@@ -28,8 +28,30 @@ module PagerBot::Plugins
       # <'911'> TEAM [MESSAGE]
       return unless query[:command] == '911'
 
-      team = query[:words].shift
-      {team: team, message: query[:words].join(' ')}
+      team = []
+      message = []
+      implicit_subject = (query[:words] & ['subject', 'because']).empty?
+
+      parse_stage = :team
+      query[:words].each do |word|
+        case word
+        when 'subject', 'because'
+          parse_stage = :message
+        else
+          case parse_stage
+          when :team
+            team << word
+            if  implicit_subject
+              parse_stage = :message
+            end
+          when :message then message << word
+          end
+        end
+      end
+      {
+        team: team.join(" "),
+        message: message.join(" ")
+      }
     end
 
     +PagerBot::Utilities::DispatchMethod
