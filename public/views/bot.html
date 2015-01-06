@@ -61,6 +61,13 @@
       Can be created <a href="https://api.slack.com/#auth">here.</a> Used to send private messages.
     </span>
   </p>
+  <p class="paragraph">
+    <label class="control-label">Bot emoji:</label>
+    <input ng-model="bot.slack.emoji" class="form-control short" placeholder=":frog:" />
+    <span class="input-description">
+      Emoji avatar for the bot.
+    </span>
+  </p>
 </section>
 
 <div class="section-header" ng-show="bot.adapter == 'irc'">
