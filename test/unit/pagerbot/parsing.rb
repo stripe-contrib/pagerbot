@@ -53,4 +53,33 @@ class Parsing < Critic::Test
       end
     end
   end
+
+  def strip_name(text, botname="test-pagerbot")
+    PagerBot::Parsing.strip_name(text, botname)
+  end
+
+  describe 'Parsing botname' do
+    #Three types of syntax are currently supported:
+    it "test-pagerbot:" do
+      assert_equal('make me a sandwich',
+                   strip_name('test-pagerbot: make me a sandwich'))
+    end
+
+    it "@test-pagerbot:" do
+      assert_equal('make me a sandwich',
+                   strip_name('@test-pagerbot: make me a sandwich'))
+    end
+
+    it "@test-pagerbot" do
+      assert_equal('make me a sandwich',
+                   strip_name('@test-pagerbot make me a sandwich'))
+    end
+
+    #The botname shouldn't be stripped out when there is neither a
+    #colon suffix or an '@' prefix
+    it "test-pagerbot" do
+      assert_equal('test-pagerbot make me a sandwich',
+                   strip_name('test-pagerbot make me a sandwich'))
+    end
+  end
 end
