@@ -1,6 +1,4 @@
-<% if shift_too_long %>
-The shift is longer than 30 hours, you probably want to do this via the admin interface! %>
-<% elsif fail_reason.nil? %>
+<% if fail_reason.nil? %>
 Ok, put <%= person.name %> on <%= schedule.name %> from <%= from %> to <%= to %>.
 <% elsif fail_reason == :not_on_call %>
 Sorry, but <%= shift_person.name %> is not on schedule on <%= Date.parse(day.to_s) %>.

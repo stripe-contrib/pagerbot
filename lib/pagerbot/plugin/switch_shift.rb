@@ -113,15 +113,10 @@ module PagerBot::Plugins
         schedule: schedule,
         person: person,
         shift_person: shift_person,
-        shift_too_long: false
       }
       vars.merge!(oncall)
 
       unless vars[:fail_reason]
-        if oncall[:to] - oncall[:from] > 30 * 60 * 60
-          vars[:shift_too_long] = true
-          return render("switch_shift", vars)
-        end
         pagerduty.post(
           "/schedules/#{schedule.id}/overrides",
           {
