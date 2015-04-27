@@ -57,8 +57,8 @@ module PagerBot
         return "" unless request[:token] == configatron.bot.slack.webhook_token
       end
       return "" unless configatron.bot.channels.include? request[:channel_name]
-      return "" unless request[:text].start_with?(configatron.bot.name+":")
-      
+      return "" unless request[:text].match(%r{@?#{configatron.bot.name}[: ]})
+
       params = event_data request
       answer = PagerBot.process(params[:text], params)
       make_reply answer, params
