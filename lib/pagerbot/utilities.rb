@@ -85,7 +85,7 @@ module PagerBot::Utilities
 
   # removes extra characters that pagerbot doesn't parse
   def self.normalize(text)
-    text.gsub(/[^-0-9A-Za-z:+' \/]/, '').downcase
+    text.gsub(/[^-0-9A-Za-z:+' \/\.]/, '').downcase
   end
 
   def self.time_link(time)

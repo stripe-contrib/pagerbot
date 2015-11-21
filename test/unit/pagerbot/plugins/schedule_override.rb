@@ -30,6 +30,11 @@ class ScheduleOverridePlugin < Critic::MockedPagerDutyTest
               plugin: 'schedule_override', person: 'me', schedule: 'primary breakage',
               from: 'now', for: '3 hours'
             })
+          check_parse("#{word} me on primary breakage from now for 3.5 hours",
+            {
+              plugin: 'schedule_override', person: 'me', schedule: 'primary breakage',
+              from: 'now', for: '3.5 hours'
+            })
           check_parse("#{word} Jake on triage until 3 PM",
             {
               plugin: 'schedule_override', person: 'jake', schedule: 'triage',
