@@ -19,19 +19,19 @@ module PagerBot
         @index[normalize(index_field_value)]
       end
 
-      def ambigious_aliases
+      def ambiguous_aliases
         seen = Set.new
-        ambigious = Set.new
+        ambiguous = Set.new
         @list.each do |member|
           member.aliases.each do |alias_|
             norm_alias = normalize(alias_['name'])
             if seen.include?(norm_alias)
-              ambigious << norm_alias
+              ambiguous << norm_alias
             end
             seen << norm_alias
           end
         end
-        ambigious
+        ambiguous
       end
 
       def serializable_list
@@ -45,17 +45,17 @@ module PagerBot
 
       def index!
         @index = {}
-        ambigious = ambigious_aliases
-        unless ambigious.empty?
+        ambiguous = ambiguous_aliases
+        unless ambiguous.empty?
           PagerBot.log.warn(
-            "Skipping the following ambigious aliases: #{ambigious.to_a}")
+            "Skipping the following ambiguous aliases: #{ambiguous.to_a}")
         end
 
         @list.each do |member|
           add_index(member.id, member)
           member.aliases = member.aliases.select do |alias_|
             norm_alias = normalize(alias_['name'])
-            unless ambigious.include? norm_alias
+            unless ambiguous.include? norm_alias
               add_index(norm_alias, member)
               true
             end

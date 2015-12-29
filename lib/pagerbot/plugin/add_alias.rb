@@ -64,7 +64,7 @@ module PagerBot::Plugins
       end
       # if too many matches
       if users_matches.length + schedule_matches.length > 1
-        return "Field #{query[:field_value]} is ambigious."
+        return "Field #{query[:field_value]} is ambiguous."
       end
       # base case, only one find!
       store = PagerBot::DataStore.new
