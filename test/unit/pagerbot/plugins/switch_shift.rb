@@ -58,6 +58,14 @@ class SwitchShiftPlugin < Critic::MockedPagerDutyTest
           })
       end
 
+      it "should parse curly quotes" do
+        check_parse("put karl on primary during john\u2019s shift on August 24th",
+          {
+            plugin: "switch_shift", person: "karl", whose_shift: "john",
+            day: "august 24th", schedule: "primary"
+          })
+      end
+
       it "should skip parsing the rest" do
         check_parse_fails("manual")
         check_parse_fails("who is on primary")
