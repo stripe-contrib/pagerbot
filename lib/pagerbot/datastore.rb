@@ -3,9 +3,9 @@ module PagerBot
   class DataStore
     def db
       return @db unless @db.nil?
-      if ENV['MONGOLAB_URI']
-        client = MongoClient.from_uri(ENV['MONGOLAB_URI'])
-        db_name = ENV['MONGOLAB_URI'][%r{/([^/\?]+)(\?|$)}, 1]
+      if ENV['MONGODB_URI']
+        client = MongoClient.from_uri(ENV['MONGODB_URI'])
+        db_name = ENV['MONGODB_URI'][%r{/([^/\?]+)(\?|$)}, 1]
       else
         client = MongoClient.new
         db_name = "admin"
