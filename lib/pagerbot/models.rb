@@ -53,6 +53,16 @@ module PagerBot
 
         @list.each do |member|
           add_index(member.id, member)
+
+          # add email as an index for users
+          if member.is_a?(User)
+            norm_email = member.email.split('@').first
+            if has_index?(norm_email)
+              PagerBot.log.warn("Adding ambiguous email alias: #{norm_email} for #{member.email}")
+            end
+            add_index(norm_email, member)
+          end
+
           member.aliases = member.aliases.select do |alias_|
             norm_alias = normalize(alias_['name'])
             unless ambiguous.include? norm_alias
@@ -65,6 +75,10 @@ module PagerBot
 
       def add_index(key, value)
         @index[normalize(key)] = value
+      end
+
+      def has_index?(key)
+        @index.key?(normalize(key))
       end
     end
 
