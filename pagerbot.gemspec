@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'pagerbot'
-  spec.version       = '0.2.0'
+  spec.version       = '0.3.0'
   spec.authors       = ['Karl-Aksel Puulmann']
   spec.email         = ['oxymaccy@gmail.com']
   spec.summary       = %q{IRC and Slackbot for PagerDuty.}

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pagerbot (0.2.0)
+    pagerbot (0.3.0)
       activesupport
       bson_ext
       chronic
@@ -124,3 +124,6 @@ DEPENDENCIES
   pry
   rake
   rerun
+
+BUNDLED WITH
+   1.13.1
