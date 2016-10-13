@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Karl-Aksel Puulmann']
   spec.email         = ['oxymaccy@gmail.com']
   spec.summary       = %q{IRC and Slackbot for PagerDuty.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.description   = %q{This bot connects Slack or IRC to PagerDuty.}
   spec.homepage      = 'https://github.com/stripe-contrib/pagerbot'
   spec.license       = 'MIT'
 
