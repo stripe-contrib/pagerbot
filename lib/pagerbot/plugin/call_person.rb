@@ -2,7 +2,7 @@ module PagerBot::Plugins
   class CallPerson
     include PagerBot::PluginBase
     responds_to :queries, :manual
-    description "Send a page directly to a person."
+    description "Page a person by nick or schedule. Needs a scratch schedule, escalation policy, and service."
     required_fields "schedule_id", "service_id"
 
     def initialize(config)
@@ -13,29 +13,31 @@ module PagerBot::Plugins
 
     def self.manual
       {
-        description: "Trigger a call to a person",
-        syntax: ["get PERSON [SUBJECT]"],
-        examples: ["get karl you are needed in warroom"]
+        description: "Page a person by nick or schedule (which could be a team)",
+        syntax: ["get PERSON|SCHEDULE [SUBJECT]"],
+        examples: [
+          "get karl you are needed in warroom",
+          "get myschedule the load balancers are down"
+        ]
       }
     end
 
     def parse(query)
-      # get karl because everything is on fire
       return unless query[:command] == "get"
 
-      person = []
+      to = []
       subject = []
       implicit_subject = (query[:words] & ['subject', 'because']).empty?
 
-      parse_stage = :person
+      parse_stage = :to
       query[:words].each do |word|
         case word
         when 'subject', 'because'
           parse_stage = :subject
         else
           case parse_stage
-          when :person
-            person << word
+          when :to
+            to << word
             if implicit_subject
               parse_stage = :subject
             end
@@ -44,7 +46,7 @@ module PagerBot::Plugins
         end
       end
       {
-        person: person.join(" "),
+        to: to.join(" "),
         subject: subject.join(" ")
       }
     end
@@ -67,11 +69,14 @@ module PagerBot::Plugins
 
     +PagerBot::Utilities::DispatchMethod
     def dispatch(query, event_data)
-      # hacky flow since API doesn't support creating an incident directly against a user
-      # - put person on call on schedule for 3 minutes
+      # hacky flow since API doesn't support creating an incident directly
+      # against a user:
+      # - put person on call on schedule for 5 minutes
       # - trigger incident
-      person = pagerduty.find_user(query[:person], event_data[:nick])
-      start = person.parse_time("now")
+      person_name, person_uid = person(query[:to], event_data[:nick])
+      log.info("Found #{person_name} #{person_uid}")
+
+      start = Time.now()
       # People still get pinged even if they're not on call,
       # so this is a safety measure.
       to = start + ChronicDuration.parse("5 minutes")
@@ -91,7 +96,7 @@ module PagerBot::Plugins
         :content_type => :json
       )
 
-      log.info "Put #{person.name} on temporary schedule for 5 minutes. #{override}"
+      log.info "Put #{person_name} on temporary schedule for 5 minutes. #{override}"
 
       incident = post_incident(
         # :TODO: Frail.
@@ -100,11 +105,30 @@ module PagerBot::Plugins
         :description => query[:subject]
       )
 
-      log.info "Created incident for #{person.name}. #{incident.inspect}"
+      log.info "Created incident for #{person_name}. #{incident.inspect}"
       # RAGE: Of course incident doesn't include the id of the incident created.
       service_url = "#{pagerduty.uri_base}/services/#{@service[:id]}"
 
-      render "call_person", {person: person, service_url: service_url}
+      render "call_person", {person_name: person_name, service_url: service_url}
+    end
+
+    def person(nick_or_schedule, requestor)
+      begin
+        person = pagerduty.find_user(nick_or_schedule, requestor)
+        return person.name, person.id
+      rescue Pagerbot::UserNotFoundError => e
+        log.info("Didn't find person '#{nick_or_schedule}'. Looking via schedule.")
+        schedule = pagerduty.find_schedule(nick_or_schedule)
+        if schedule.nil?
+          raise RuntimeError.new(
+            "Couldn't find a person or schedule named '#{nick_or_schedule}'")
+        end
+        users = pagerduty.get_schedule_oncall(schedule.id, Time.now())
+        if users.length == 0
+          raise RuntimeError.new("No one is on call for #{nick_or_schedule}")
+        end
+        return users[0][:name], users[0][:id]
+      end
     end
   end
 end
