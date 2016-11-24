@@ -31,6 +31,7 @@ module PagerBot
             message << "\nSyntax: #{info[:syntax].first}"
           end
           response = {message: message}
+          PagerBot.log.error("Error in dispatch:\n#{e.message}\n#{e.backtrace}")
         end
       else
         begin
@@ -87,24 +88,15 @@ module PagerBot
     def lookup_time(query, event_data)
       # who is on primary?
       schedule = @pagerduty.find_schedule(query[:schedule])
-      time = @pagerduty.parse_time(query[:time], event_data[:nick], :guess => :middle)
-
-      schedule_info = @pagerduty.get(
-        "/schedules/#{schedule.id}",
-        :params => {
-          :since => time.iso8601,
-          :until => (time + 1).iso8601
-        })
-
-      entries = schedule_info[:schedule][:final_schedule][:rendered_schedule_entries]
+      time = @pagerduty.parse_time(query[:time], event_data[:nick], guess: :middle)
+      users = @pagerduty.get_schedule_oncall(schedule.id, time)
       vars = {
         schedule: schedule,
         start: time,
         person: nil
       }
-      if entries.length > 0
-        oncall = entries.first
-        vars[:person] = @pagerduty.users.get(oncall[:user][:id])
+      if users.length > 0
+        vars[:person] = @pagerduty.users.get(users[0][:id])
       end
       render "lookup_time", vars
     end

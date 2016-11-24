@@ -98,6 +98,27 @@ module PagerBot
       return schedule
     end
 
+    # Returns a list like:
+    # [
+    #   {
+    #     id: "ABCDEF",
+    #     name: "Dan Benamy",
+    #     email: "daniel@benamy.info",
+    #     color: "orange"
+    #   }
+    # ]
+    def get_schedule_oncall(schedule_id, time)
+      response = get(
+        "/schedules/#{schedule_id}",
+        :params => {
+          :since => time.iso8601,
+          :until => (time + 1).iso8601
+      })
+      response[:schedule][:final_schedule][:rendered_schedule_entries].map do |x|
+        x[:user]
+      end
+    end
+
     def next_oncall(person_id, schedule_id)
       response = get(
         "/schedules/#{schedule_id}",
