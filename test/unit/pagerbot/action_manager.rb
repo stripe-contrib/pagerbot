@@ -108,19 +108,30 @@ class ActionManager < Critic::MockedPagerDutyTest
     end
 
     describe 'who is on schedule X' do
-      it 'should work on happy path' do
+      it 'returns the person on call and uses the requestors timezone' do
         @pagerduty.expects(:get)
+          .twice
           .with { |url, _, _| url == '/schedules/PRIMAR1' }
           .returns(@fake_schedule)
 
         query = {schedule: "primary", time: "3 PM"}
-        val = @manager.lookup_time(query, event_data).fetch(:message)
-        # answer from perspective of the person.
-        # query was from GMT-7, which adds 7 hours to the original time
-        assert_equal("Karl-Aksel Puulmann is on call at 2014-07-28 22:00:00 +0000.", val)
+        # Query as john who's set to eastern in the local db which is UTC-0400
+        # or -0500, depending on the time of year.
+        val = @manager.lookup_time(query, {nick: 'john'}).fetch(:message)
+        # The date varies so don't include it in the assertion.
+        assert_match(
+          /Karl-Aksel Puulmann is on call at .* 15:00:00 -0[45]00 for Primary breakage/,
+          val)
+
+        # And now query again as karl, who's set to UTC (in the db; this ignores
+        # the tz in the pagerduty schedule api response).
+        val = @manager.lookup_time(query, {nick: 'karl'}).fetch(:message)
+        assert_match(
+          /Karl-Aksel Puulmann is on call at .* 15:00:00 \+0000 for Primary breakage/,
+          val)
       end
 
-      it 'noone on schedule' do
+      it 'returns no one on schedule' do
         @fake_schedule[:schedule][:final_schedule][:rendered_schedule_entries] = []
         @pagerduty.expects(:get)
           .with { |url, _, _| url == '/schedules/PRIMAR1' }
@@ -128,8 +139,9 @@ class ActionManager < Critic::MockedPagerDutyTest
 
         query = {schedule: "primary", time: "3 PM"}
         val = @manager.lookup_time(query, event_data).fetch(:message)
-
-        assert_equal("No-one is on call then for Primary breakage.", val)
+        assert_match(
+          /No-one is on call at .* 15:00:00 \+0000 for Primary breakage/,
+          val)
       end
     end
 

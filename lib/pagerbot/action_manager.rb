@@ -3,7 +3,7 @@ module PagerBot
   class ActionManager
     extend MethodDecorators
     attr_reader :pagerduty, :plugin_manager, :current_adapter
-    
+
     def initialize(options)
       @options = options
       @pagerduty = PagerBot::PagerDuty.new(options.fetch(:pagerduty))
@@ -69,7 +69,7 @@ module PagerBot
 
     +PagerBot::Utilities::DispatchMethod
     def manual(query, event_data)
-      { 
+      {
         message: "Sending you the manual in a PM.",
         private_message: render('manual', loaded_plugins: plugin_manager.loaded_plugins, name: @options[:bot][:name])
       }
@@ -99,12 +99,12 @@ module PagerBot
       entries = schedule_info[:schedule][:final_schedule][:rendered_schedule_entries]
       vars = {
         schedule: schedule,
-        start: nil
+        start: time,
+        person: nil
       }
       if entries.length > 0
         oncall = entries.first
         vars[:person] = @pagerduty.users.get(oncall[:user][:id])
-        vars[:start] = vars[:person].parse_time(oncall[:start])
       end
       render "lookup_time", vars
     end

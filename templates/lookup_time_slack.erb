@@ -1,5 +1,1 @@
-<% unless start.nil? %>
-<%= person.name %> is on call at <%= utilities.display_time start %>. <%= utilities.display_schedule(schedule, 'View Schedule') %>
-<% else %>
-No-one is on call then. <%= utilities.display_schedule(schedule, 'View Schedule') %>
-<% end %>
+<% unless person.nil? %><%= person.name %><% else %>No-one<% end %> is on call at <%= utilities.display_time start %>. <%= utilities.display_schedule(schedule, 'View Schedule') %>

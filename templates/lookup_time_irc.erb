@@ -1,5 +1,1 @@
-<% unless start.nil? %>
-<%= person.name %> is on call at <%= start %>.
-<% else %>
-No-one is on call then for <%= schedule.name %>.
-<% end %>
+<% unless person.nil? %><%= person.name %><% else %>No-one<% end %> is on call at <%= start %> for <%= schedule.name %>.
