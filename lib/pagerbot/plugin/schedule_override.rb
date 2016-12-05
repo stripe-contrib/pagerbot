@@ -81,11 +81,12 @@ module PagerBot::Plugins
     +PagerBot::Utilities::DispatchMethod
     def dispatch(query, event_data)
       # put me on primary breakage from 2 pm until 9 pm
+      asker = pagerduty.find_user(event_data[:nick])
       person = pagerduty.find_user(query[:person], event_data[:nick])
-      from = person.parse_time(query[:from])
-      
+      from = asker.parse_time(query[:from])
+
       if query[:to]
-        to = person.parse_time(query[:to])
+        to = asker.parse_time(query[:to])
       else
         duration = ChronicDuration.parse(query[:for], :keep_zero => true)
         raise "Failed to parse duration from `#{query[:for]}`." if duration == 0
@@ -110,11 +111,10 @@ module PagerBot::Plugins
         },
         :content_type => :json)
 
-      # TODO: Answer should be askers timezone?
       vars = {
         person: person,
-        from: person.parse_time(override[:override][:start]),
-        to: person.parse_time(override[:override][:end]),
+        from: asker.parse_time(override[:override][:start]),
+        to: asker.parse_time(override[:override][:end]),
         schedule: schedule
       }
 

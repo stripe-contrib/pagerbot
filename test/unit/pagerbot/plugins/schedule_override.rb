@@ -54,7 +54,7 @@ class ScheduleOverridePlugin < Critic::MockedPagerDutyTest
         check_parse_fails("who is on primary")
       end
 
-      it "should skip parsing switch_shift queries" do 
+      it "should skip parsing switch_shift queries" do
         check_parse_fails("put me on primary during nel's shift on 5th of August")
       end
     end
@@ -86,6 +86,32 @@ class ScheduleOverridePlugin < Critic::MockedPagerDutyTest
           "schedule_override", query, {nick: "karl"})
         expected = "Ok. Put Karl-Aksel Puulmann on Primary breakage from 2014-07-29 01:09:21 +0000 until 2014-07-29 03:09:21 +0000"
         assert_equal(expected, val.fetch(:message))
+      end
+
+      it "should use the asking person's timezone when interpreting times" do
+        PagerBot.pagerduty
+          .expects(:post)
+          .with { |_, params, _| params[:override][:start] == '2016-01-01T12:00:00-05:00' }
+          .returns({
+            # Not used by the test, it's just here so the code doesn't blow up.
+            override: {
+              id: "PRIMAR1",
+              user: {
+                name: "Karl-Aksel Puulmann",
+                id: "P123456"
+              },
+              start: "2016-01-01T01:00:00Z",
+              end: "2016-01-01T03:00:00Z"
+            }
+          })
+
+        query = {
+          person: "karl",
+          schedule: "primary",
+          from: "2016-01-01 at 12:00",
+          for: "2 hours"
+        }
+        @plugin_manager.dispatch("schedule_override", query, {nick: "john"})
       end
     end
   end
