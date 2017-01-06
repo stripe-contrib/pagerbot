@@ -10,13 +10,13 @@ module PagerBot::Utilities
 
     loop do
       resp = pagerduty.get(endpoint, :params => {
-        :offset => offset, :limit => 200 })
+        :offset => offset, :limit => 100 })
       resp[collection_name].each do |item|
         result[item[:id]] = item
       end
 
       offset += resp[collection_name].length
-      break if offset >= resp[:total]
+      break unless resp[:more]
     end
     result
   end
