@@ -88,7 +88,7 @@ module PagerBot::Plugins
             :start => start.iso8601,
             :end => to.iso8601,
             :user => {
-              :id => person.id.to_s,
+              :id => person_uid.to_s,
               :type => :user_reference
             }
           }
@@ -116,7 +116,7 @@ module PagerBot::Plugins
       begin
         person = pagerduty.find_user(nick_or_schedule, requestor)
         return person.name, person.id
-      rescue Pagerbot::UserNotFoundError => e
+      rescue Pagerbot::UserNotFoundError
         log.info("Didn't find person '#{nick_or_schedule}'. Looking via schedule.")
         schedule = pagerduty.find_schedule(nick_or_schedule)
         if schedule.nil?
@@ -127,7 +127,7 @@ module PagerBot::Plugins
         if users.length == 0
           raise RuntimeError.new("No one is on call for #{nick_or_schedule}")
         end
-        return users[0][:name], users[0][:id]
+        return users[0][:summary], users[0][:id]
       end
     end
   end

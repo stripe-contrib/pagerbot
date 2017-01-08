@@ -89,14 +89,14 @@ module PagerBot
       # who is on primary?
       schedule = @pagerduty.find_schedule(query[:schedule])
       time = @pagerduty.parse_time(query[:time], event_data[:nick], guess: :middle)
-      users = @pagerduty.get_schedule_oncall(schedule.id, time)
+      oncall_users = @pagerduty.get_schedule_oncall(schedule.id, time)
       vars = {
         schedule: schedule,
         start: time,
         person: nil
       }
-      if users.length > 0
-        vars[:person] = @pagerduty.users.get(users[0][:id])
+      if oncall_users.length > 0
+        vars[:person] = @pagerduty.users.get(oncall_users[0][:id])
       end
       render "lookup_time", vars
     end
