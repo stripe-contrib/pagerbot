@@ -19,7 +19,7 @@
             }
           }
         })
-        .when('/bot-setup', {
+        .when('/chatbot-settings', {
           templateUrl: 'views/bot.html',
           controller: 'BotSetupCtrl',
           resolve: {

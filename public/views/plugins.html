@@ -25,7 +25,7 @@
       <div class="panel-collapse row equal row-eq-height" ng-show="plugin.enabled">
         <div class="panel-body col-xs-12 col-sm-12 col-md-6" >
           <p ng-repeat="field in plugin.required_fields" ng-show="plugin.required_fields">
-            <label class="control-label">{{ field }}</label> 
+            <label class="control-label">{{ field }}</label>
             <input ng-model="plugin.settings[field]" class="form-control short"/>
           </p>
           <p ng-hide="plugin.required_fields" class="empty-setup">
@@ -43,11 +43,11 @@
 </section>
 
 <div class="continue-bar">
-  <a href ng-click="goTo('/bot-setup')" 
+  <a href ng-click="goTo('/chatbot-settings')"
     class="btn btn-primary">
     Back
   </a>
-  <a href ng-click="goTo('/user-aliases')" 
+  <a href ng-click="goTo('/user-aliases')"
     class="btn btn-primary pull-right">
     Continue
   </a>

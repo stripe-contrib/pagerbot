@@ -19,7 +19,7 @@
 </section>
 
 <div class="section-header">
-  <h1>Pagerduty setup</h1>
+  <h1>Pagerduty settings</h1>
 </div>
 
 <section class="content">
@@ -27,7 +27,7 @@
     <label class="control-label">Pagerduty subdomain:</label>
     <input ng-model="pagerduty.subdomain" class="form-control short" />
     <span class="input-description">
-      Your firms pagerduty subdomain name. Can be found by <a href="https://app.pagerduty.com/accounts/search">logging in.</a> If the url logging is that is my-startup.pagerduty.com, you should fill in in my-startup.
+      Your company pagerduty subdomain name. Can be found by <a href="https://app.pagerduty.com/accounts/search">logging in.</a> If the url logging is that is my-startup.pagerduty.com, you should fill in in my-startup.
     </span>
   </p>
   <p class="paragraph">
@@ -45,7 +45,7 @@
 </section>
 
 <div class="continue-bar">
-  <a href ng-click="goTo('/bot-setup')"
+  <a href ng-click="goTo('/chatbot-settings')"
     class="btn btn-primary pull-right"
     ng-class="{'disabled': !can_connect}">
     Continue

@@ -22,6 +22,6 @@ angular.module('pagerbot-admin')
     };
 
     $scope.continue = function() {
-      $location.path('/bot-setup');
+      $location.path('/chatbot-settings');
     };
   });
