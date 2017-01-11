@@ -3,14 +3,35 @@
 </div>
 
 <section class="content">
-  <p class="paragraph">
+
+  <div class="topPad paragraph">
+    <label class="control-label">Chat type:</label>
+    <select class="form-control very-short" ng-model="bot.adapter">
+      <option value="slack-rtm">Slack RTM</option>
+      <option value="slack">Slack</option>
+      <option value="irc">IRC</option>
+      <option value="hipchat">HipChat</option>
+    </select>
+  </div>
+</section>
+
+<div class="section-header" >
+  <h1 ng-show="bot.adapter == 'slack-rtm'">Slack Real Time Messaging API settings</h1>
+  <h1 ng-show="bot.adapter == 'slack'">Slack settings</h1>
+  <h1 ng-show="bot.adapter == 'irc'">IRC settings</h1>
+  <h1 ng-show="bot.adapter == 'hipchat'">HipChat settings</h1>
+</div>
+
+<section class="content">
+  <p class="paragraph" ng-if="bot.adapter != 'slack-rtm'">
     <label class="control-label">Bot name:</label>
     <input ng-model="bot.name" class="form-control short" />
     <span class="input-description">
       The nickname that the bot will be addressable by.
     </span>
   </p>
-  <div class="paragraph">
+
+  <div class="paragraph" ng-if="bot.adapter != 'slack-rtm'">
     <label class="control-label">Channels:</label>
 
     <ul class="single-list">
@@ -28,46 +49,7 @@
     </span>
   </div>
 
-  <div class="topPad paragraph">
-    <label class="control-label">Chat type:</label>
-    <select class="form-control very-short" ng-model="bot.adapter">
-      <option value="slack-rtm">Slack RTM</option>
-      <option value="slack">Slack</option>
-      <option value="irc">IRC</option>
-      <option value="hipchat">HipChat</option>
-    </select>
-  </div>
-</section>
-
-<div class="section-header" ng-show="bot.adapter == 'slack-rtm'">
-<h1>Slack-RTM settings</h1>
-</div>
-
-<section class="content" ng-show="bot.adapter == 'slack-rtm'">
-  <p class="paragraph">
-    <label class="control-label">API token:</label>
-    <input ng-model="bot.slack.api_token" class="form-control short" />
-    <span class="input-description">
-      Log into Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
-      select "Bots", and add a new configuration.
-      Paste the API Token into the field above.
-    </span>
-  </p>
-  <p class="paragraph">
-    <label class="control-label">Bot emoji:</label>
-    <input ng-model="bot.slack.emoji" class="form-control short" placeholder=":frog:" />
-    <span class="input-description">
-      Emoji avatar for the bot.
-    </span>
-  </p>
-</section>
-
-<div class="section-header" ng-show="bot.adapter == 'slack'">
-<h1>Slack settings</h1>
-</div>
-
-<section class="content" ng-show="bot.adapter == 'slack'">
-  <p class="paragraph">
+  <p class="paragraph" ng-if="bot.adapter == 'slack'">
     <label class="control-label">Webhook token:</label>
     <input ng-model="bot.slack.webhook_token" class="form-control short" />
     <span class="input-description">
@@ -77,48 +59,43 @@
       then paste the Token into the field above.
     </span>
   </p>
-  <p class="paragraph">
+
+  <p class="paragraph" ng-if="bot.adapter == 'slack-rtm' || bot.adapter == 'slack'">
     <label class="control-label">API token:</label>
     <input ng-model="bot.slack.api_token" class="form-control short" />
     <span class="input-description">
       Log into Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
-      select "Bots", and add a new configuration.
-      Paste the API Token into the field above.
+      select "Bots", and add a new configuration. Paste the API Token into the field above.
     </span>
   </p>
-  <p class="paragraph">
+
+  <p class="paragraph" ng-if="bot.adapter == 'slack'">
     <label class="control-label">Bot emoji:</label>
     <input ng-model="bot.slack.emoji" class="form-control short" placeholder=":frog:" />
     <span class="input-description">
       Emoji avatar for the bot.
     </span>
   </p>
-</section>
 
-<div class="section-header" ng-show="bot.adapter == 'irc'">
-<h1>IRC settings</h1>
-</div>
-
-<section class="content" ng-show="bot.adapter == 'irc'">
-  <p class="paragraph">
+  <p class="paragraph" ng-if="bot.adapter == 'irc'">
     <label class="control-label">Password:</label>
     <input ng-model="bot.irc.bot_password" class="form-control short" type="password" />
     <span class="input-description">
       Password for the bot to identify itself with. Leave blank if the nickname is not registered.
     </span>
   </p>
-  <p class="paragraph">
+  <p class="paragraph" ng-if="bot.adapter == 'irc'">
     <label class="control-label">IRC server:</label>
     <input ng-model="bot.irc.server" required class="form-control short" />
   </p>
-  <p class="paragraph">
+  <p class="paragraph" ng-if="bot.adapter == 'irc'">
     <label class="control-label">Port:</label>
     <input ng-model="bot.irc.port" class="form-control very-short" />
     <span class="input-description">
       Port to connect to the irc server. 6697 is default for most servers.
     </span>
   </p>
-  <p class="paragraph checkbox">
+  <p class="paragraph checkbox" ng-if="bot.adapter == 'irc'">
     <label class="control-label">
       <input ng-model="bot.irc.use_ssl" type="checkbox" /> Use ssl to connect to server
     </label>
