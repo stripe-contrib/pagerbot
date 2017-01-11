@@ -3,8 +3,7 @@
 </div>
 
 <section class="content">
-
-  <div class="topPad paragraph">
+  <div class="content-header">
     <label class="control-label">Chat type:</label>
     <select class="form-control very-short" ng-model="bot.adapter">
       <option value="slack-rtm">Slack RTM</option>
@@ -13,7 +12,7 @@
       <option value="hipchat">HipChat</option>
     </select>
   </div>
-</section>
+<!--</section>
 
 <div class="section-header" >
   <h1 ng-show="bot.adapter == 'slack-rtm'">Slack Real Time Messaging API settings</h1>
@@ -22,7 +21,7 @@
   <h1 ng-show="bot.adapter == 'hipchat'">HipChat settings</h1>
 </div>
 
-<section class="content">
+<section class="content">-->
   <p class="paragraph" ng-if="bot.adapter != 'slack-rtm'">
     <label class="control-label">Bot name:</label>
     <input ng-model="bot.name" class="form-control short" />
@@ -53,7 +52,7 @@
     <label class="control-label">Webhook token:</label>
     <input ng-model="bot.slack.webhook_token" class="form-control short" />
     <span class="input-description">
-      Log into Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
+      In Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
       select "Outgoing WebHooks", and add a new configuration.
       Set Channel to <span class="highlight">Any</span>, Trigger word(s) to <span class="highlight">{{ bot.name }}</span>, and URL(s) to <span class="highlight">{{ thisdomain }}</span>,
       then paste the Token into the field above.
@@ -64,7 +63,7 @@
     <label class="control-label">API token:</label>
     <input ng-model="bot.slack.api_token" class="form-control short" />
     <span class="input-description">
-      Log into Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
+      In Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
       select "Bots", and add a new configuration. Paste the API Token into the field above.
     </span>
   </p>
