@@ -14,6 +14,7 @@ module PagerBot
   class AdminPage < Sinatra::Base
     set :public_folder, 'public'
     set :bind, '0.0.0.0'
+    set :logging, true
 
     helpers do
       def protected!
