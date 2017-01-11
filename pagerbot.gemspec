@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rest-client'
   spec.add_dependency 'sinatra'
   spec.add_dependency 'thin'
-  spec.add_dependency 'mongo'
+  spec.add_dependency 'mongo', '> 2.0'
   spec.add_dependency 'bson_ext'
 
   spec.add_development_dependency 'minitest', '< 5.0'
