@@ -59,7 +59,7 @@ module PagerBot
     def update_listed_collection(collection_name, member, id_field=:id)
       member.delete('_id')
       query = {id_field => member[id_field]}
-      db[collection_name].update(query, member, :upsert => true)
+      db[collection_name].update_one(query, {'$set': member}, :upsert => true)
     end
 
     def update_listed(collection_name, members, id_field=:id)
@@ -69,7 +69,8 @@ module PagerBot
     end
 
     def need_to_update_list(collection_name)
-      last_time = db[:update_times].find({collection: collection_name}).first
+      findQuery = {collection: collection_name}
+      last_time = db[:update_times].find(findQuery).first
       if last_time.nil?
         last_time = {'collection' => collection_name, 'time' => 0}
       end
@@ -77,7 +78,7 @@ module PagerBot
       update_needed = Time.now.to_i - last_time.fetch('time') > 120
       if update_needed
         last_time['time'] = Time.now.to_i
-        db[:update_times].save(last_time)
+        db[:update_times].update_one(findQuery, {'$set': last_time}, :upsert => true)
       end
 
       update_needed
@@ -90,9 +91,7 @@ module PagerBot
       if database_collection.empty?
         PagerBot.log.info("Creating #{collection_name} list for the first time!")
         pagerduty_collection = pd_list_of(collection_name)
-        pagerduty_collection.each do |member|
-          db[collection_name].save(member)
-        end
+        update_listed(collection_name, pagerduty_collection)
         return [pagerduty_collection, [], []]
       end
 
@@ -101,13 +100,11 @@ module PagerBot
         added, removed = PagerBot::Utilities.update_lists(
           pd_list_of(collection_name), database_collection)
 
-        added.each do |member|
-          db[collection_name].save(member)
-        end
+        update_listed(collection_name, added)
         PagerBot.log.info("Added to #{collection_name}: #{added.map{|m| m['id']}}")
 
         removed_ids = removed.map {|m| m['id']}
-        db[collection_name].remove(id: {'$in' => removed_ids})
+        db[collection_name].delete_many(id: {'$in' => removed_ids})
         PagerBot.log.info("Removed from #{collection_name}: #{removed_ids}")
 
         database_collection = db_get_list_of(collection_name)
