@@ -19,17 +19,18 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport'
+  spec.add_dependency 'bson_ext'
   spec.add_dependency 'chronic'
   spec.add_dependency 'chronic_duration'
   spec.add_dependency 'cinch'
   spec.add_dependency 'configatron'
   spec.add_dependency 'mailgun-ruby'
   spec.add_dependency 'method_decorators'
+  spec.add_dependency 'mongo', '> 2.0'
   spec.add_dependency 'rest-client'
   spec.add_dependency 'sinatra'
+  spec.add_dependency 'slack-ruby-client'
   spec.add_dependency 'thin'
-  spec.add_dependency 'mongo', '> 2.0'
-  spec.add_dependency 'bson_ext'
 
   spec.add_development_dependency 'minitest', '< 5.0'
   spec.add_development_dependency 'minitest-reporters'
