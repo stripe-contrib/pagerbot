@@ -88,7 +88,7 @@ module PagerBot
     bot_defaults = {
       name: 'pagerbot',
       channels: ['general'],
-      adapter: 'slack',
+      adapter: 'slack-rtm',
       irc: {
         server: 'irc.freenode.org',
         port: 6697,

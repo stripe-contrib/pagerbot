@@ -32,6 +32,7 @@
   <div class="topPad paragraph">
     <label class="control-label">Chat type:</label>
     <select class="form-control very-short" ng-model="bot.adapter">
+      <option value="slack-rtm">Slack RTM</option>
       <option value="slack">Slack</option>
       <option value="irc">IRC</option>
       <option value="hipchat">HipChat</option>
@@ -39,10 +40,32 @@
   </div>
 </section>
 
+<div class="section-header" ng-show="bot.adapter == 'slack-rtm'">
+<h1>Slack-RTM settings</h1>
+</div>
+
+<section class="content" ng-show="bot.adapter == 'slack-rtm'">
+  <p class="paragraph">
+    <label class="control-label">API token:</label>
+    <input ng-model="bot.slack.api_token" class="form-control short" />
+    <span class="input-description">
+      Log into Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
+      select "Bots", and add a new configuration.
+      Paste the API Token into the field above.
+    </span>
+  </p>
+  <p class="paragraph">
+    <label class="control-label">Bot emoji:</label>
+    <input ng-model="bot.slack.emoji" class="form-control short" placeholder=":frog:" />
+    <span class="input-description">
+      Emoji avatar for the bot.
+    </span>
+  </p>
+</section>
+
 <div class="section-header" ng-show="bot.adapter == 'slack'">
 <h1>Slack settings</h1>
 </div>
-
 
 <section class="content" ng-show="bot.adapter == 'slack'">
   <p class="paragraph">
