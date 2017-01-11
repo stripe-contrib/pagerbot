@@ -125,17 +125,17 @@ module PagerBot
 
       available = PagerBot::PluginManager
         .available_plugins.sort.map do |name|
-          ret = PagerBot::PluginManager.info name
+          plugin_info = PagerBot::PluginManager.info name
           plugin = db[:plugins].find({name: name}).first
           if plugin
-            ret[:enabled] = plugin.fetch('enabled')
-            ret[:settings] = plugin.fetch('settings')
+            plugin_info[:enabled] = plugin.fetch('enabled')
+            plugin_info[:settings] = plugin.fetch('settings')
           else
-            ret[:enabled] = ret[:required_fields].empty? && ret[:required_plugins].empty?
-            ret[:settings] = {}
-            db[:plugins].save(ret)
+            plugin_info[:enabled] = plugin_info[:required_fields].empty? && plugin_info[:required_plugins].empty?
+            plugin_info[:settings] = {}
+            db[:plugins].insert_one(plugin_info)
           end
-          ret
+          plugin_info
         end
 
       {
