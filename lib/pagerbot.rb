@@ -72,7 +72,6 @@ module PagerBot
       settings[:plugins][plugin["name"]] = plugin["settings"]
     end
 
-    puts settings
     settings[:pagerduty][:users] = store.db_get_list_of('users')
     settings[:pagerduty][:schedules] = store.db_get_list_of('schedules')
     configatron.configure_from_hash(settings)
@@ -83,7 +82,7 @@ module PagerBot
     # this will recreate the action_manager
     load_configuration_from_db!
     PagerBot.plugin_manager.load_plugins
-    log.info("Reload configuration.\nNew configuration: #{configatron.to_h}")
+    # log.info("Reload configuration.\nNew configuration: #{configatron.to_h}")
   end
 end
 

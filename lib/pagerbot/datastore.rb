@@ -3,10 +3,11 @@ module PagerBot
   class DataStore
     def db
       return @db unless @db.nil?
+      Mongo::Logger.logger.level = ::Logger::INFO
       if ENV['MONGODB_URI']
         client = Mongo::Client.new(ENV['MONGODB_URI'])
       else
-        client = Mongo::Client.new('localhost:27017', :database => 'admin')
+        client = Mongo::Client.new('mongodb://localhost:27017', :database => 'pagerbot')
       end
 
       @db = client.database
