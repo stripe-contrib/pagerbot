@@ -1,5 +1,6 @@
 module PagerBot::Parsing
   def self.strip_name(text, nick=nil)
+    return text if nick.nil?
     text.gsub(/\A(@?#{nick}:?) /, '')
   end
 

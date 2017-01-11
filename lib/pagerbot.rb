@@ -36,8 +36,9 @@ module PagerBot
   def self.process(message, extra_info={})
     plugin_manager.load_plugins
 
+    bot_name = extra_info.fetch :bot_name, configatron.bot.name
     log.info "msg=#{message.inspect}, extra_info=#{extra_info.inspect}"
-    query = PagerBot::Parsing.parse(message, configatron.bot.name)
+    query = PagerBot::Parsing.parse(message, bot_name)
     log.info "query=#{query.inspect}"
     answer = action_manager.dispatch(query, extra_info)
     log.info "answer=#{answer.inspect}"
