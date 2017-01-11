@@ -190,7 +190,7 @@ module PagerBot
 
       users_collection = PagerBot::Models::Collection.new(
         store.db_get_list_of('users'),
-        PagerBot::Models::Users)
+        PagerBot::Models::User)
       {
         saved: {users: users_collection.serializable_list}
       }.to_json
