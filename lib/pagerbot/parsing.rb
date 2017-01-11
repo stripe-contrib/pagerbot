@@ -11,7 +11,7 @@ module PagerBot::Parsing
 
   def self.parse(text, botname, plugin_manager = nil)
     text = strip_name(text, botname)
-    # TODO: this isn't a very good approach and would break with unicode names 
+    # TODO: this isn't a very good approach and would break with unicode names
     # note that this somewhat breaks some messages, stripping them of
     # symbols and downcasing everything.
     command, words = split_text(text)
@@ -77,7 +77,7 @@ module PagerBot::Parsing
     #  return {:schedule => :first}
     #end
 
-    if (time.empty?) 
+    if (time.empty?)
       time = ['now']
     end
 

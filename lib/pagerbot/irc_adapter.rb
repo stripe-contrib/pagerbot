@@ -41,7 +41,7 @@ module PagerBot::IrcAdapter
     bot = Cinch::Bot.new do
       configure do |c|
         c.nick = configatron.bot.name
-        c.password = configatron.bot.irc.fetch(:bot_password, nil) 
+        c.password = configatron.bot.irc.fetch(:bot_password, nil)
         c.server = configatron.bot.irc.server
         c.ssl.use = configatron.bot.irc.fetch(:use_ssl, false)
         # add a hash at the beginning if needed
