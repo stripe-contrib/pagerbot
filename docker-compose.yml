@@ -10,3 +10,5 @@ services:
       - mongo
     ports:
       - "4567:4567"
+    volumes:
+      - .:/pagerbot

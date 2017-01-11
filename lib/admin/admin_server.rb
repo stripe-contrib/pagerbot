@@ -13,6 +13,7 @@ include Mongo
 module PagerBot
   class AdminPage < Sinatra::Base
     set :public_folder, 'public'
+    set :bind, '0.0.0.0'
 
     helpers do
       def protected!
