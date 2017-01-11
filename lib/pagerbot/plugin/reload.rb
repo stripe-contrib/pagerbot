@@ -2,15 +2,15 @@ module PagerBot::Plugins
   class Reload
     include PagerBot::PluginBase
     responds_to :queries, :manual
-    description "Reload schedules and people."
+    description "Update list of pagerduty schedules and linked accounts"
 
     def initialize(config)
     end
 
     def self.manual
       {
-        description: "Reload schedules and people",
-        syntax: ["reload"],
+        description: Reload.description,
+        # syntax: ["reload"],
         examples: ["reload"]
       }
     end
