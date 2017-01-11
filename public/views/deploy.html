@@ -7,65 +7,94 @@
     Congratulations on getting this far! If everything went well, you can now deploy pagerbot.
   </p>
 
-  <div class="content no-box" ng-show="bot.adapter == 'slack'">
-    <p class="paragraph">
-      To deploy a <strong>slackbot</strong>, go to the
-      <a ng-href="{{dashboard_url}}/settings">dashboard settings</a> and
-      create a new config variable named <strong>DEPLOYED</strong>, with the value
-      set to <strong>true</strong>.
+  <div class="paragraph deploy" id="heroku-deploy">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href class="accordion-toggle" ng-click="instructions.heroku = !instructions.heroku">
+          <h4 class="panel-title">Deploying on heroku</h4>
+        </a>
+      </div>
+      <div class="panel-collapse" ng-show="instructions.heroku">
+        <div class="panel-body" ng-show="bot.adapter == 'slack' || bot.adapter == 'slack-rtm'">
+          <p class="paragraph">
+            To deploy a <strong>slackbot</strong> on heroku, go to the
+            <a ng-href="{{dashboard_url}}/settings">dashboard settings</a> and
+            create a new config variable named <strong>DEPLOYED</strong>, with the value
+            set to <strong>true</strong>.
 
-      It should look similar to the screenshot below:
-    </p>
+            It should look similar to the screenshot below:
+          </p>
 
-    <a ng-href="{{dashboard_url}}/settings" class="paragraph">
-      <img src="pics/slack_example.png" class="paragraph img-responsive">
-    </a>
+          <a ng-href="{{dashboard_url}}/settings" class="paragraph">
+            <img src="pics/slack_example.png" class="paragraph img-responsive">
+          </a>
 
-    <p class="paragraph">
-      After clicking save, heroku will restart and launch your bot. It should automatically answer queries in the channels you specified.
-    </p>
+          <p class="paragraph">
+            After clicking save, heroku will restart and launch your bot. It should automatically answer queries in the channels you specified.
+          </p>
+        </div>
+
+        <div class="panel-body" ng-show="bot.adapter == 'hipchat'">
+          <p class="paragraph">
+            To deploy a <strong>HipChat bot</strong>, go to the
+            <a ng-href="{{dashboard_url}}/settings">dashboard settings</a> and
+            create a new config variable named <strong>DEPLOYED</strong>, with the value
+            set to <strong>true</strong>.
+
+            It should look similar to the screenshot below:
+          </p>
+
+          <a ng-href="{{dashboard_url}}/settings" class="paragraph">
+            <img src="pics/slack_example.png" class="paragraph img-responsive">
+          </a>
+          <p class="paragraph">
+            After clicking save, heroku will restart and launch your bot.
+          </p>
+          <p class="paragraph">
+            Once that's done, go to your <a href="https://hipchat.com/admin/addons#manage-addons">HipChat Add-ons page</a> and click on <strong>Build and install your own integration</strong>.
+          </p>
+
+          <p class="paragraph">
+            Paste <strong><a href>{{app_url}}</a></strong> in the modal, and you're all set to go!
+          </p>
+        </div>
+
+        <div class="panel-body" ng-show="bot.adapter == 'irc'">
+          <p class="paragraph">
+            To deploy an <strong>irc bot</strong>, go to the
+            <a ng-href="{{dashboard_url}}">dashboard</a> and rescale the application to have a single irc worker and nothing else.
+
+            It should look similar to the screenshot below:
+          </p>
+
+          <a ng-href="{{dashboard_url}}" class="paragraph">
+            <img src="pics/irc_example.png" class="img-responsive">
+          </a>
+
+          <p class="paragraph">
+            After clicking apply changes, heroku will restart and launch your bot. It should automatically join and answer queries in the channels you specified.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="content no-box" ng-show="bot.adapter == 'hipchat'">
-    <p class="paragraph">
-      To deploy a <strong>HipChat bot</strong>, go to the
-      <a ng-href="{{dashboard_url}}/settings">dashboard settings</a> and
-      create a new config variable named <strong>DEPLOYED</strong>, with the value
-      set to <strong>true</strong>.
-
-      It should look similar to the screenshot below:
-    </p>
-
-    <a ng-href="{{dashboard_url}}/settings" class="paragraph">
-      <img src="pics/slack_example.png" class="paragraph img-responsive">
-    </a>
-    <p class="paragraph">
-      After clicking save, heroku will restart and launch your bot.
-    </p>
-    <p class="paragraph">
-      Once that's done, go to your <a href="https://hipchat.com/admin/addons#manage-addons">HipChat Add-ons page</a> and click on <strong>Build and install your own integration</strong>.
-    </p>
-
-    <p class="paragraph">
-      Paste <strong><a href>{{app_url}}</a></strong> in the modal, and you're all set to go!
-    </p>
-  </div>
-
-  <div class="content no-box" ng-show="bot.adapter == 'irc'">
-    <p class="paragraph">
-      To deploy an <strong>irc bot</strong>, go to the
-      <a ng-href="{{dashboard_url}}">dashboard</a> and rescale the application to have a single irc worker and nothing else.
-
-      It should look similar to the screenshot below:
-    </p>
-
-    <a ng-href="{{dashboard_url}}" class="paragraph">
-      <img src="pics/irc_example.png" class="img-responsive">
-    </a>
-
-    <p class="paragraph">
-      After clicking apply changes, heroku will restart and launch your bot. It should automatically join and answer queries in the channels you specified.
-    </p>
+  <div class="paragraph deploy" id="own-deploy">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href class="accordion-toggle" ng-click="instructions.own = !instructions.own">
+          <h4 class="panel-title">Deploying on own servers</h4>
+        </a>
+      </div>
+      <div class="panel-collapse" ng-show="instructions.own">
+        <div class="panel-body">
+          <p class="paragraph">
+            To deploy the bot on your own servers, set the environment variable <strong>DEPLOYED</strong> to the value
+            <strong>true</strong> and restart this process.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <p class="paragraph">

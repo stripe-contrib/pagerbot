@@ -7,14 +7,25 @@ angular.module('pagerbot-admin')
     if (!window.location.origin)
       window.location.origin = window.location.protocol+"//"+window.location.host;
     $scope.app_url = window.location.origin;
+
     if (!$scope.app_name || window.location.hostname.indexOf("herokuapp.com") < 0) {
       $scope.found_app_name = false;
       $scope.dashboard_url = $scope.url_base;
       $scope.papertrail_url = $scope.url_base;
+
+      $scope.instructions = {
+        heroku: false,
+        own: true
+      };
     } else {
       $scope.found_app_name = true;
       $scope.dashboard_url = $scope.url_base + $scope.app_name;
       $scope.papertrail_url = "https://addons-sso.heroku.com/apps/"+$scope.app_name+"/addons/papertrail:choklad";
       //"https://papertrailapp.com/systems/"+$scope.app_name+"/events";
+
+      $scope.instructions = {
+        heroku: true,
+        own: false
+      };
     }
   });

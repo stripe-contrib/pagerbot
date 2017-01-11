@@ -137,6 +137,12 @@ a.hollow-badge:hover {
   margin-bottom: 10px;
 }
 
+.deploy .panel-body {
+  padding: 0px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 /* Make columns equal height (plugins) */
 .row-eq-height {
   display: -webkit-box;
