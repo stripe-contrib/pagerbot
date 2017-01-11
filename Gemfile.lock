@@ -8,11 +8,14 @@ PATH
       chronic_duration
       cinch
       configatron
+      eventmachine
+      faye-websocket
       mailgun-ruby
       method_decorators
       mongo (> 2.0)
       rest-client
       sinatra
+      slack-ruby-client
       thin
 
 GEM
@@ -43,11 +46,20 @@ GEM
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
     eventmachine (1.2.1)
+    faraday (0.10.1)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.10.1)
+      faraday (>= 0.7.4, < 1.0)
+    faye-websocket (0.10.5)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
     ffi (1.9.3)
+    gli (2.14.0)
     hashie (2.0.5)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    json (2.0.2)
     listen (2.7.9)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -71,6 +83,7 @@ GEM
     mongo (2.4.1)
       bson (>= 4.2.1, < 5.0.0)
     multi_json (1.12.1)
+    multipart-post (2.0.0)
     netrc (0.11.0)
     numerizer (0.1.1)
     powerbar (1.0.11)
@@ -97,6 +110,14 @@ GEM
       rack (~> 1.5)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
+    slack-ruby-client (0.7.7)
+      activesupport
+      faraday
+      faraday_middleware
+      gli
+      hashie
+      json
+      websocket-driver
     slop (3.6.0)
     thin (1.7.0)
       daemons (~> 1.0, >= 1.0.9)
@@ -109,6 +130,9 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
+    websocket-driver (0.6.4)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
 
 PLATFORMS
   ruby
@@ -125,4 +149,4 @@ DEPENDENCIES
   rerun
 
 BUNDLED WITH
-   1.13.6
+   1.13.7
