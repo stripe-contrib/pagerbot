@@ -48,8 +48,7 @@ module PagerBot
         begin
           pagerduty.get('/users')
           true
-        rescue Exception => e
-          puts("#{e.message}")
+        rescue
           false
         end
       end
@@ -72,10 +71,11 @@ module PagerBot
     post '/pagerduty' do
       protected!
       content_type :json
-      args = json_args request
-      args.delete('_id')
+      settings = json_args request
+      settings.delete('_id')
 
-      db['pagerduty'].update({}, args, :upsert => true)
+      PagerBot.log.info("Saving pagerduty settings. settings="+settings.to_json)
+      db[:pagerduty].update_one({}, {'$set': settings}, :upsert => true)
 
       response = {
         can_connect: can_connect_to_pd,
@@ -110,11 +110,11 @@ module PagerBot
       protected!
       content_type :json
 
-      args = json_args request
-      args.delete('_id')
-      db['bot'].update({}, args, :upsert => true)
+      bot_settings = json_args request
+      bot_settings.delete('_id')
+      db[:bot].update_one({}, {'$set': bot_settings}, :upsert => true)
       {
-        saved: store.get_or_create('bot', bot_defaults)
+        saved: store.get_or_create(:bot, bot_defaults)
       }.to_json
     end
 
@@ -125,14 +125,14 @@ module PagerBot
       available = PagerBot::PluginManager
         .available_plugins.sort.map do |name|
           ret = PagerBot::PluginManager.info name
-          plugin = db['plugins'].find_one({name:name})
+          plugin = db[:plugins].find({name: name}).first
           if plugin
             ret[:enabled] = plugin.fetch('enabled')
             ret[:settings] = plugin.fetch('settings')
           else
             ret[:enabled] = ret[:required_fields].empty? && ret[:required_plugins].empty?
             ret[:settings] = {}
-            db['plugins'].save(ret)
+            db[:plugins].save(ret)
           end
           ret
         end

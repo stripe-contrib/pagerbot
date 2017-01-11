@@ -96,7 +96,7 @@ module PagerBot
       configatron.bot.hipchat.oauthId = request_json["oauthId"]
       configatron.bot.hipchat.oauthSecret = request_json["oauthSecret"]
 
-      db['bot'].update({}, {
+      db[:bot].update_one({}, {
         "$set" => {
           "hipchat.oauthId" => configatron.bot.hipchat.oauthId,
           "hipchat.oauthSecret" => configatron.bot.hipchat.oauthSecret
@@ -130,7 +130,7 @@ module PagerBot
 
     delete '/webhook/:id' do
       if params[:id] == configatron.bot.hipchat.oauthId
-        db['bot'].update({}, {
+        db[:bot].update({}, {
           "$unset" => {
             "hipchat.oauthId" => "",
             "hipchat.oauthSecret" => ""

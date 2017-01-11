@@ -4,18 +4,16 @@ module PagerBot
     def db
       return @db unless @db.nil?
       if ENV['MONGODB_URI']
-        client = MongoClient.from_uri(ENV['MONGODB_URI'])
-        db_name = ENV['MONGODB_URI'][%r{/([^/\?]+)(\?|$)}, 1]
+        client = Mongo::Client.new(ENV['MONGODB_URI'])
       else
-        client = MongoClient.new
-        db_name = "admin"
+        client = Mongo::Client.new('localhost:27017', :database => 'admin')
       end
 
-      @db = client.db(db_name)
+      @db = client.database
     end
 
     def get_pagerduty
-      params = db['pagerduty'].find_one
+      params = db[:pagerduty].find().first
       params = ActiveSupport::HashWithIndifferentAccess.new params
       params[:subdomain] ||= ""
       params[:api_key] ||= ""
@@ -47,10 +45,11 @@ module PagerBot
 
     def get_or_create(collection_name, default={})
       collection = db[collection_name]
-      current_value = collection.find_one
-      unless current_value
-        collection.save(default)
-        current_value = default
+      current_value = collection.find().first
+
+      if current_value.nil?
+        collection.update_one({}, default)
+        current_value = BSON::Document.new default
       end
       current_value.delete('_id')
       current_value
@@ -70,7 +69,7 @@ module PagerBot
     end
 
     def need_to_update_list(collection_name)
-      last_time = db['update_times'].find_one({collection: collection_name})
+      last_time = db[:update_times].find({collection: collection_name}).first
       if last_time.nil?
         last_time = {'collection' => collection_name, 'time' => 0}
       end
@@ -78,7 +77,7 @@ module PagerBot
       update_needed = Time.now.to_i - last_time.fetch('time') > 120
       if update_needed
         last_time['time'] = Time.now.to_i
-        db['update_times'].save(last_time)
+        db[:update_times].save(last_time)
       end
 
       update_needed
