@@ -64,7 +64,7 @@ class CallPerson < Critic::MockedPagerDutyTest
           .expects(:post)
           .with { |url, params, _|
             url == "/schedules/PFAKESCHED/overrides" &&
-            params[:override][:user_id] == "P123456"
+            params[:override][:user][:id] == "P123456"
           }
           .returns({})
 

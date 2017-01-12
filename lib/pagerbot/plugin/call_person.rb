@@ -8,7 +8,7 @@ module PagerBot::Plugins
     def initialize(config)
       @schedule_id = config.fetch(:schedule_id)
       @service_id = config.fetch(:service_id)
-      @service = pagerduty.get("/services/#{@service_id}")[:service]
+      @service = pagerduty.get("/services/#{@service_id}?include%5B%5D=integrations")[:service]
     end
 
     def self.manual
@@ -94,8 +94,9 @@ module PagerBot::Plugins
       log.info "Put #{person.name} on temporary schedule for 5 minutes. #{override}"
 
       incident = post_incident(
-        :service_key => @service[:service_key],
-        :event_type => "trigger",
+        # :TODO: Frail.
+        :service_key => @service[:integrations][0][:integration_key],
+        :event_type => :trigger,
         :description => query[:subject]
       )
 
