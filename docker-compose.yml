@@ -4,7 +4,7 @@ services:
     image: mongo:3
     ports:
       - "27017:27017"
-  pagerbot :
+  pagerbot-admin:
     build: .
     links:
       - mongo
@@ -12,3 +12,11 @@ services:
       - "4567:4567"
     volumes:
       - .:/pagerbot
+    command: rerun -b -- ruby lib/pagerbot.rb admin
+  pagerbot:
+    build: .
+    links:
+      - mongo
+    volumes:
+      - .:/pagerbot
+    command: rerun -b -- ruby lib/pagerbot.rb

@@ -92,27 +92,31 @@ if __FILE__ == $0
     !!(s =~ /^(true|t|yes|y|1)$/i)
   end
 
-  arg = ARGV.first || ''
-  is_admin = arg == 'admin'
-  is_admin ||= arg == 'web' && !to_boolean(ENV['DEPLOYED'] || "")
+  is_admin = ARGV.first == 'admin'
+  is_admin ||= ARGV.first == 'web' && !to_boolean(ENV['DEPLOYED'] || "")
 
   PagerBot.log.info("Is_admin is "+is_admin.to_s)
   if is_admin
     PagerBot::AdminPage.run!
-  elsif ARGV.include?('web')
-    PagerBot.reload_configuration!
-    if ARGV.include?('slack') || configatron.bot.adapter == 'slack'
-      PagerBot::SlackAdapter.run!
-    elsif ARGV.include?('hipchat') || configatron.bot.adapter == 'hipchat'
-      PagerBot::HipchatAdapter.run!
-    end
-  elsif ARGV.include? 'slack-rtm' || configatron.bot.adapter == 'slack-rtm'
-    PagerBot.reload_configuration!
-    PagerBot::SlackRTMAdapter.run!
-  elsif ARGV.include? 'irc' || configatron.bot.adapter == 'irc'
-    PagerBot.reload_configuration!
-    PagerBot::IrcAdapter.run!
   else
-    raise "Could not find adapter #{arg}. It must be either 'irc', 'slack', 'slack-rtm' or 'hipchat'"
+    PagerBot.reload_configuration!
+
+    if ARGV.include?('web')
+      if ARGV.include?('slack') || configatron.bot.adapter == 'slack'
+        PagerBot::SlackAdapter.run!
+      elsif ARGV.include?('hipchat') || configatron.bot.adapter == 'hipchat'
+        PagerBot::HipchatAdapter.run!
+      end
+    elsif ARGV.include? 'slack-rtm' || configatron.bot.adapter == 'slack-rtm'
+      PagerBot::SlackRTMAdapter.run!
+    elsif ARGV.include? 'irc' || configatron.bot.adapter == 'irc'
+      PagerBot::IrcAdapter.run!
+    else
+      desiredAdapter = ARGV.first || configatron.bot.adapter
+      puts("Could not find adapter #{desiredAdapter}.\n" \
+        "It must be one of 'irc', 'slack', 'slack-rtm' or 'hipchat'.\n\n" \
+        "To configure the bot, run this command again with `admin` as the first argument.")
+      exit 1
+    end
   end
 end

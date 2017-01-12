@@ -11,5 +11,3 @@ ADD . /pagerbot
 ENV MONGODB_URI 'mongodb://mongo:27017/pagerbot'
 
 EXPOSE 4567
-
-CMD ["rerun", "-b", "--", "ruby", "lib/pagerbot.rb", "admin"]
