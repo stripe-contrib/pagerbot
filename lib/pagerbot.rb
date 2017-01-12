@@ -106,10 +106,10 @@ if __FILE__ == $0
     elsif ARGV.include?('hipchat') || configatron.bot.adapter == 'hipchat'
       PagerBot::HipchatAdapter.run!
     end
-  elsif ARGV.include? 'slack-rtm'
+  elsif ARGV.include? 'slack-rtm' || configatron.bot.adapter == 'slack-rtm'
     PagerBot.reload_configuration!
     PagerBot::SlackRTMAdapter.run!
-  elsif ARGV.include? 'irc'
+  elsif ARGV.include? 'irc' || configatron.bot.adapter == 'irc'
     PagerBot.reload_configuration!
     PagerBot::IrcAdapter.run!
   else
