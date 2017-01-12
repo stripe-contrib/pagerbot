@@ -75,7 +75,7 @@ module PagerBot
     end
 
     def send_message(message, channel)
-      @client.web_client.chat_postMessage channel: channel, text: message, as_user: true
+      @client.web_client.chat_postMessage channel: channel, text: message, as_user: true, unfurl_links: false
     end
   end
 end
