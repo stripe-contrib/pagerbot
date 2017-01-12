@@ -1,7 +1,7 @@
 PagerBot [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stripe-contrib/pagerbot) [![Build Status](https://travis-ci.org/stripe-contrib/pagerbot.svg?branch=master)](https://travis-ci.org/stripe-contrib/pagerbot)
 ========
 
-Pagerbot is a bot that makes managing [PagerDuty](http://www.pagerduty.com/) on-call schedules easier. It currently supports IRC and Slack, and can be easily deployed to Heroku. 
+Pagerbot is a bot that makes managing [PagerDuty](http://www.pagerduty.com/) on-call schedules easier. It currently supports IRC and Slack, and can be easily deployed to Heroku.
 
 Pagerbot uses [Chronic](https://github.com/mojombo/chronic) for natural language date and time parsing.
 
@@ -41,20 +41,22 @@ Currently pagerbot supports the following commands (prefix all of them with bot 
 Local development
 =============
 
-You will need ruby with bundle, as well as a running instance of mongodb running on port 27017.
-
-Fork and clone this repository and open it in a console.
+Easiest way to run pagerbot locally is via docker and [docker-compose](https://docs.docker.com/compose/).
 
 ```bash
-# running tests
-rake test
+# Running tests
+docker-compose run pagerbot rake tests
 
-# running the admin interface
-bundle exec ruby lib/pagerbot.rb admin
+# Opening the admin interface to configure the bot. Accessible via `localhost:4567`
+# The interface will auto-reload on file changes (though html/javascript may be cached).
+docker-compose up --build pagerbot-admin
 
-# run irc bot locally (after setting up bot in admin)
-bundle exec ruby lib/pagerbot.rb admin irc
+# Run the bot itself locally
+docker-compose up --build pagerbot
 ```
+
+Deploying via heroku
+=======
 
 To deploy it to heroku, git clone, create a heroku app and push to launch it.
 ```bash
@@ -82,8 +84,8 @@ When using the admin interface, enter the same password, the username can be arb
 
 ### How can I relaunch the admin interface?
 
-Via web: 
-* [Log into heroku](https://dashboard.heroku.com/) and navigate to your application. 
+Via web:
+* [Log into heroku](https://dashboard.heroku.com/) and navigate to your application.
 * **If it's a slackbot:** go to settings and remove DEPLOYED config variable.
 * **If it's an irc bot:** rescale your application to have 1 web worker and 0 irc workers.
 
