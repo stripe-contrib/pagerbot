@@ -76,7 +76,7 @@ module PagerBot
       settings.delete('_id')
 
       PagerBot.log.info("Saving pagerduty settings. settings="+settings.to_json)
-      db[:pagerduty].update_one({}, {'$set': settings}, :upsert => true)
+      db[:pagerduty].update_one({}, {'$set' => settings}, :upsert => true)
 
       response = {
         can_connect: can_connect_to_pd,
@@ -113,7 +113,7 @@ module PagerBot
 
       bot_settings = json_args request
       bot_settings.delete('_id')
-      db[:bot].update_one({}, {'$set': bot_settings}, :upsert => true)
+      db[:bot].update_one({}, {'$set' => bot_settings}, :upsert => true)
       {
         saved: store.get_or_create(:bot, bot_defaults)
       }.to_json

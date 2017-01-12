@@ -60,7 +60,7 @@ module PagerBot
     def update_listed_collection(collection_name, member, id_field=:id)
       member.delete('_id')
       query = {id_field => member[id_field]}
-      db[collection_name].update_one(query, {'$set': member}, :upsert => true)
+      db[collection_name].update_one(query, {'$set' => member}, :upsert => true)
     end
 
     def update_listed(collection_name, members, id_field=:id)
@@ -79,7 +79,7 @@ module PagerBot
       update_needed = Time.now.to_i - last_time.fetch('time') > 120
       if update_needed
         last_time['time'] = Time.now.to_i
-        db[:update_times].update_one(findQuery, {'$set': last_time}, :upsert => true)
+        db[:update_times].update_one(findQuery, {'$set' => last_time}, :upsert => true)
       end
 
       update_needed
