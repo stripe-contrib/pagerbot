@@ -56,16 +56,19 @@ module PagerBot
 
       extra_data = {
         nick: find_user(message.user).name,
-        bot_name: @client.self.name,
         adapter: :slack
       }
 
+      usernames = [@client.self.name]
       # In direct messages, don't require the bot name.
       if message.channel.start_with? 'D'
-        extra_data[:bot_name] = nil
+        usernames.push nil
       end
 
-      response = PagerBot.process message.text, extra_data
+      text = PagerBot::Parsing.strip_names message.text, usernames
+      return if text.nil? # Not addressed to this user.
+
+      response = PagerBot.process text, extra_data
       if response[:private_message]
         dm_channel = "@#{find_user(message.user).name}"
         send_message response.fetch(:private_message), dm_channel

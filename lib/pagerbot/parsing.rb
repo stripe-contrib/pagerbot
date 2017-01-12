@@ -4,6 +4,15 @@ module PagerBot::Parsing
     text.gsub(/\A(@?#{nick}:?) /, '')
   end
 
+  # Strip one of possible nicknames or return nil if no match.
+  def self.strip_names(text, nicks)
+    nicks.each do |nick|
+      return text if nick.nil?
+      return strip_name(text, nick) if text.match(%r{@?#{nick}[: ]})
+    end
+    nil
+  end
+
   def self.split_text(text)
     command, *words = PagerBot::Utilities.normalize(text).split
     [command, words]

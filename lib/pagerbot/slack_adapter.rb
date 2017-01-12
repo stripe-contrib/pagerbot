@@ -32,7 +32,7 @@ module PagerBot
       unless answer[:message]
         return ""
       end
-      
+
       JSON.generate({
         username: configatron.bot.name,
         icon_emoji: emoji,
@@ -60,7 +60,8 @@ module PagerBot
              configatron.bot.channels.include?(request[:channel_name])
         return ""
       end
-      return "" unless request[:text].match(%r{@?#{configatron.bot.name}[: ]})
+      text = Pagerbot::Parsing.strip_names(params[:text], [configatron.bot.name])
+      return "" if text.nil?
 
       params = event_data request
       answer = PagerBot.process(params[:text], params)
