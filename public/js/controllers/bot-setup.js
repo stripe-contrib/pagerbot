@@ -21,7 +21,7 @@ angular.module('pagerbot-admin')
       if (!bot_info) bot_info = $rootScope.bot;
       console.log("Saving bot settings:", bot_info);
       $scope.status = 'saving';
-      $scope.can_connect = false;
+      $scope.validateSlackConnection(bot_info);
 
       $http.post('/bot', bot_info)
         .success(function(response) {
@@ -39,4 +39,41 @@ angular.module('pagerbot-admin')
     $scope.remove_channel = function(chan, index) {
       $rootScope.bot.channels.splice(index, 1);
     };
+
+    $scope.auth = {
+      can_connect: 'no',
+      last_valid_token: null,
+      success_response: null,
+      error_response: null
+    }
+    $scope.can_connect = 'no';
+    $scope.last_valid_token = null;
+
+    $scope.validateSlackConnection = function(bot_info) {
+      if (bot_info.adapter === 'slack-rtm' || bot_info.adapter == 'slack') {
+        var token = bot_info.slack.api_token;
+        if (token === $scope.auth.last_valid_token) {
+          $scope.auth.can_connect = 'yes';
+          return;
+        }
+        if (!token || token.length < 10) {
+          $scope.auth.can_connect = 'no';
+          return;
+        }
+        $scope.auth.can_connect = 'validating';
+        $http.get("https://slack.com/api/auth.test?token="+token)
+          .success(function(response) {
+            if (response.ok) {
+              $scope.auth.can_connect = 'yes';
+              $scope.auth.last_valid_token = token;
+              $scope.auth.success_response = response;
+            } else {
+              $scope.auth.can_connect = 'no';
+              $scope.auth.error_response = response;
+            }
+          });
+      }
+    }
+
+    $scope.validateSlackConnection($rootScope.bot);
   });

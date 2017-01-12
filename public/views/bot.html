@@ -52,6 +52,9 @@
   <p class="paragraph" ng-if="bot.adapter == 'slack-rtm' || bot.adapter == 'slack'">
     <label class="control-label">API token:</label>
     <input ng-model="bot.slack.api_token" class="form-control short" />
+    <span ng-show="auth.can_connect == 'validating'" class="status-label status-label-saving">Testing...</span>
+    <span ng-show="auth.can_connect == 'no'" class="status-label status-label-bad">Auth check failed ({{ auth.error_response.error }})</span>
+    <span ng-show="auth.can_connect == 'yes'" class="status-label status-label-good">Auth check succeeded (team {{ auth.success_response.team }})</span>
     <span class="input-description">
       In Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
       select "Bots", and add a new configuration. Paste the API Token into the field above.

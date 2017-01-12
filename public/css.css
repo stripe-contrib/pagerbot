@@ -395,6 +395,9 @@ label.control-label {
 .status-label-bad {
   color: #f0ad4e;
 }
+.status-label-saving {
+  color: #999999;
+}
 
 .continue-bar {
   margin-left: 30px;
