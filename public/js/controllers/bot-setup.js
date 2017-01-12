@@ -5,6 +5,13 @@ angular.module('pagerbot-admin')
     // assume $rootScope.bot is populated in main.js
     $scope.status = 'saved';
 
+    $scope.adapters = [
+      {value: 'slack-rtm', name: 'Slack Real Time Messaging'},
+      {value: 'irc', name: 'IRC'},
+      {value: 'hipchat', name: 'HipChat'},
+      {value: 'slack', name: 'Slack Events API'},
+    ];
+
     // when we change the values, save!
     $delayed_watch($rootScope, 'bot', function(value) {
       $scope.$save(value);

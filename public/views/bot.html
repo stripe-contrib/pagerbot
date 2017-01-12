@@ -4,24 +4,20 @@
 
 <section class="content">
   <div class="content-header">
-    <label class="control-label">Chat type:</label>
-    <select class="form-control very-short" ng-model="bot.adapter">
-      <option value="slack-rtm">Slack RTM</option>
-      <option value="slack">Slack</option>
-      <option value="irc">IRC</option>
-      <option value="hipchat">HipChat</option>
-    </select>
+    <p><strong>Choose a chat service:</strong></p>
+    <div class="btn-group btn-toggle" data-toggle="buttons">
+      <label class="btn btn-default"
+        ng-repeat="adapter in adapters"
+        ng-class="{'active': bot.adapter == adapter.value, 'btn-primary': bot.adapter == adapter.value}">
+        <input type="radio" name="options" ng-value="adapter.value" ng-model="bot.adapter"> {{ adapter.name }}
+      </label>
+    </div>
+
+    <span class="input-description" ng-if="bot.adapter == 'slack-rtm'">
+      Slack real time messaging client, easiest to configure.
+    </span>
   </div>
-<!--</section>
 
-<div class="section-header" >
-  <h1 ng-show="bot.adapter == 'slack-rtm'">Slack Real Time Messaging API settings</h1>
-  <h1 ng-show="bot.adapter == 'slack'">Slack settings</h1>
-  <h1 ng-show="bot.adapter == 'irc'">IRC settings</h1>
-  <h1 ng-show="bot.adapter == 'hipchat'">HipChat settings</h1>
-</div>
-
-<section class="content">-->
   <p class="paragraph" ng-if="bot.adapter != 'slack-rtm'">
     <label class="control-label">Bot name:</label>
     <input ng-model="bot.name" class="form-control short" />
