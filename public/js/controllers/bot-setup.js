@@ -6,7 +6,7 @@ angular.module('pagerbot-admin')
     $scope.status = 'saved';
 
     $scope.adapters = [
-      {value: 'slack-rtm', name: 'Slack Real Time Messaging'},
+      {value: 'slack-rtm', name: 'Slack Real Time Messaging API'},
       {value: 'irc', name: 'IRC'},
       {value: 'hipchat', name: 'HipChat'},
       {value: 'slack', name: 'Slack Events API'},
