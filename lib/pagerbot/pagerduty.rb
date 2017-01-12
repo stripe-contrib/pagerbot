@@ -20,7 +20,11 @@ module PagerBot
       @schedules = PagerBot::Models::Collection.new(
         pd_config.fetch(:schedules, []), PagerBot::Models::Schedule)
 
-      headers_hash = { "Authorization" => "Token token=#{@api_key}" }
+      headers_hash = {
+        # :TRICKY: Allow pagerduty v1 API keys.
+        "Accept" => "application/vnd.pagerduty+json;version=2",
+        "Authorization" => "Token token=#{@api_key}"
+      }
       @resource = RestClient::Resource.new(api_base,
         :headers => headers_hash)
     end
