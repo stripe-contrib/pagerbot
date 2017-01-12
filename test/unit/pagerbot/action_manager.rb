@@ -6,7 +6,7 @@ class ActionManager < Critic::MockedPagerDutyTest
     opts
   end
 
-  before do 
+  before do
     @manager = PagerBot::ActionManager.new(
       :pagerduty => @pagerduty_settings,
       :bot => @bot_settings)
@@ -40,8 +40,8 @@ class ActionManager < Critic::MockedPagerDutyTest
       type: "generic_email",
       id: "PFAKESRV",
       name: "AnotherService",
-      service_url: "/services/P4UQ4A3",
-      service_key: "another-service@subdomain.pagerduty.com",
+      # service_url: "/services/P4UQ4A3",
+      # service_key: "another-service@subdomain.pagerduty.com",
     }
   end
 
@@ -115,7 +115,7 @@ class ActionManager < Critic::MockedPagerDutyTest
 
         query = {schedule: "primary", time: "3 PM"}
         val = @manager.lookup_time(query, event_data).fetch(:message)
-        # answer from perspective of the person. 
+        # answer from perspective of the person.
         # query was from GMT-7, which adds 7 hours to the original time
         assert_equal("Karl-Aksel Puulmann is on call at 2014-07-28 22:00:00 +0000.", val)
       end

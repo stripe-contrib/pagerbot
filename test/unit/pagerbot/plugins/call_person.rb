@@ -11,15 +11,17 @@ class CallPerson < Critic::MockedPagerDutyTest
     @service = {
       id: "PFAKESRV",
       name: "Fake service",
-      service_key: "fake_service_key",
-      service_url: "/services/PFAKESRV"
+      integrations: [{
+        id: "PFAKEINTEGRATION",
+        integration_key: "fake_service_key",
+      }]
     }
 
     @pagerduty = PagerBot::PagerDuty.new(@pagerduty_settings)
     PagerBot.stubs(:pagerduty).returns(@pagerduty)
     PagerBot::PagerDuty.any_instance
       .stubs(:get)
-      .with("/services/PFAKESRV")
+      .with("/services/PFAKESRV?include%5B%5D=integrations")
       .returns(:service => @service)
   end
 
@@ -72,7 +74,7 @@ class CallPerson < Critic::MockedPagerDutyTest
         @plugin
           .expects(:post_incident)
           .with({
-            :event_type => "trigger",
+            :event_type => :trigger,
             :service_key => "fake_service_key",
             :description => "description description"
           })
