@@ -53,7 +53,7 @@ module PagerBot::Plugins
       if parse_vars[:day].empty?
         parse_vars[:day] = ['today']
       end
-      
+
       # TODO: check the 's of person
       result = Hash[ parse_vars.map { |k, v| [k, v.join(' ')] } ]
       result[:whose_shift] = result[:whose_shift].chomp "'s"
@@ -74,7 +74,7 @@ module PagerBot::Plugins
           until: range_end.iso8601,
           overflow: true
         })
-      oncall = entries[:entries].select do |p| 
+      oncall = entries[:entries].select do |p|
         p[:user][:id] == person_id.to_s
       end
 
@@ -105,7 +105,7 @@ module PagerBot::Plugins
 
       oncall = when_oncall(
         shift_person.id, schedule.id,
-        day_start, day_end, 
+        day_start, day_end,
         event_data[:nick])
 
       vars = {
@@ -123,7 +123,10 @@ module PagerBot::Plugins
             :override => {
               :start => vars[:from].iso8601,
               :end => vars[:to].iso8601,
-              :user_id => person.id.to_s
+              :user => {
+                :id => person.id.to_s,
+                :type => :user_reference
+              }
             }
           },
           :content_type => :json)

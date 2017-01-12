@@ -19,7 +19,7 @@ class SwitchShiftPlugin < Critic::MockedPagerDutyTest
         url == "/schedules/PRIMAR1/overrides" &&
         data[:override][:start] == start_date &&
         data[:override][:end] == end_date &&
-        data[:override][:user_id] == "P123456"
+        data[:override][:user][:id] == "P123456"
       end
       .returns(override)
   end

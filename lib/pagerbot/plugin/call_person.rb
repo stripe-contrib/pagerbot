@@ -82,7 +82,10 @@ module PagerBot::Plugins
           :override => {
             :start => start.iso8601,
             :end => to.iso8601,
-            :user_id => person.id.to_s
+            :user => {
+              :id => person.id.to_s,
+              :type => :user_reference
+            }
           }
         },
         :content_type => :json
