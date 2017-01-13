@@ -59,7 +59,7 @@ module PagerBot
         adapter: :slack
       }
 
-      usernames = [@client.self.name]
+      usernames = [@client.self.name, "<@#{@client.self.id}>"]
       # In direct messages, don't require the bot name.
       if message.channel.start_with? 'D'
         usernames.push nil
