@@ -93,20 +93,20 @@ class CallPerson < Critic::MockedPagerDutyTest
         PagerBot::PagerDuty.any_instance
           .expects(:get_schedule_oncall)
           .with { |schedule_id, _, _| schedule_id == 'SCHED123' }
-          .returns([{id: 'P123456', name: 'Bob'}])
+          .returns([{id: 'P123456', summary: 'Bob'}])
 
         PagerBot::PagerDuty.any_instance
           .expects(:post)
           .with { |url, params, _|
             url == "/schedules/PFAKESCHED/overrides" &&
-            params[:override][:user_id] == "P123456"
+            params[:override][:user][:id] == "P123456"
           }
           .returns({})
 
         @plugin
           .expects(:post_incident)
           .with({
-            :event_type => "trigger",
+            :event_type => :trigger,
             :service_key => "fake_service_key",
             :description => "there's too much pizza"
           })
