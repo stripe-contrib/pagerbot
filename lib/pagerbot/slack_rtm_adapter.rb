@@ -8,20 +8,6 @@ module PagerBot
       PagerBot::SlackRTMAdapter.new().run!
     end
 
-    def self.can_connect?(token)
-      return false unless token
-      Slack.configure do |config|
-        config.token = token
-      end
-      begin
-        client = Slack::Web::Client.new
-        client.auth_test
-        true
-      rescue
-        false
-      end
-    end
-
     def initialize
       # Load slack API token
       Slack.configure do |config|
