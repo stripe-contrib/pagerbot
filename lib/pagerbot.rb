@@ -101,7 +101,7 @@ if __FILE__ == $0
   else
     PagerBot.reload_configuration!
 
-    if ARGV.include?('web')
+    if ARGV.include?('web') || ['slack', 'hipchat'].include?(configatron.bot.adapter)
       if ARGV.include?('slack') || configatron.bot.adapter == 'slack'
         PagerBot::SlackAdapter.run!
       elsif ARGV.include?('hipchat') || configatron.bot.adapter == 'hipchat'
