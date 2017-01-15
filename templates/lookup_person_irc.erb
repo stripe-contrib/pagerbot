@@ -3,5 +3,5 @@
 <% elsif time < Time.now %>
 <%= person.name %> is on <%= schedule.name %> now
 <% else %>
-<%= person.name %> goes on call at <%= time %>
+<%= person.name %> goes on call at <%= time %> for schedule <%= schedule.name %>
 <% end %>

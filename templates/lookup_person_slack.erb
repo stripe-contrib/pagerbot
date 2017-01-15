@@ -3,5 +3,5 @@
 <% elsif time < Time.now %>
 <%= person.name %> is on <%= utilities.display_schedule(schedule) %> now.
 <% else %>
-<%= person.name %> goes on call at <%= utilities.display_time time %>. <%= utilities.display_schedule(schedule, 'View Schedule') %>
+<%= person.name %> goes on call at <%= utilities.display_time time %> for schedule <%= utilities.display_schedule(schedule) %>
 <% end %>
