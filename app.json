@@ -17,7 +17,7 @@
         "mongolab",
         "papertrail"
     ],
-    "env": {
-        "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-ruby"
-    }
+    "buildpacks": [
+        { "url": "https://github.com/heroku/heroku-buildpack-ruby" }
+    ]
 }
