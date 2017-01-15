@@ -121,6 +121,7 @@ module PagerBot
 
     def next_oncall(person_id = nil, schedule_id = nil)
       params = {}
+      params['include[]'] = 'schedules'
       params['user_ids[]'] = person_id unless person_id.nil?
       params['schedule_ids[]'] = schedule_id unless schedule_id.nil?
       params[:until] = (Time.now + 3.months).iso8601

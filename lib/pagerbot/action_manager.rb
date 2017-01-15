@@ -104,10 +104,18 @@ module PagerBot
     +PagerBot::Utilities::DispatchMethod
     def lookup_person(query, event_data)
       # when am i on primary breakage
-      schedule = @pagerduty.find_schedule(query[:schedule])
+
       person = @pagerduty.find_user(query[:person], event_data[:nick])
 
-      next_oncall = @pagerduty.next_oncall(person.id, schedule.id)
+      # :TRICKY: Special case "call" - this will return the next time the
+      #   person goes on any on call.
+      if query[:schedule] == 'call'
+        next_oncall = @pagerduty.next_oncall(person.id, nil)
+        schedule = @pagerduty.find_schedule(next_oncall[:schedule][:name])
+      else
+        schedule = @pagerduty.find_schedule(query[:schedule])
+        next_oncall = @pagerduty.next_oncall(person.id, schedule.id)
+      end
 
       output_data = {
         time: nil,

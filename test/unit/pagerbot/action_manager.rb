@@ -70,6 +70,10 @@ class ActionManager < Critic::MockedPagerDutyTest
     describe 'when is someone on schedule' do
       before do
         @fake_oncall_info = {
+          schedule: {
+            id: 'P56789',
+            name: 'Primary'
+          },
           user: {
             color: "crimson",
             email: "karl@stripe.com",
@@ -101,6 +105,19 @@ class ActionManager < Critic::MockedPagerDutyTest
         response = @manager.lookup_person({
           :person => "karl",
           :schedule => "primary"
+        }, event_data)
+
+        assert_equal("Karl-Aksel Puulmann is on Primary breakage now", response.fetch(:message))
+      end
+
+      it 'special case: on schedule `call` return _any_ schedule' do
+        @pagerduty.expects(:next_oncall)
+          .with('P123456', nil)
+          .returns @fake_oncall_info
+
+        response = @manager.lookup_person({
+          :person => "karl",
+          :schedule => "call"
         }, event_data)
 
         assert_equal("Karl-Aksel Puulmann is on Primary breakage now", response.fetch(:message))
