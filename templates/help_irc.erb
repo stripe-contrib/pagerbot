@@ -8,6 +8,7 @@ I am <%= name %>, and I keep track of the pagers. You can ask me the following:
 
   who is on SCHEDULE [at TIME]
   when [am I | is PERSON] on SCHEDULE
+  when [am I | is PERSON] on call
 
 <% loaded_plugins.each do |name, plugin| %>
 <% next unless plugin.responds_to? :manual %>
