@@ -119,11 +119,17 @@ module PagerBot
       end
     end
 
-    def next_oncall(person_id, schedule_id)
-      response = get(
-        "/schedules/#{schedule_id}",
-        :params => {:include_next_oncall_for_user => person_id})
-      response[:schedule][:next_oncall_for_user]
+    def next_oncall(person_id = nil, schedule_id = nil)
+      params = {}
+      params['user_ids[]'] = person_id unless person_id.nil?
+      params['schedule_ids[]'] = schedule_id unless schedule_id.nil?
+      params[:until] = (Time.now + 3.months).iso8601
+      params[:earliest] = true
+
+      PagerBot.log.debug("Fetching /oncalls for user/schedule. params=#{params.inspect}")
+      response = get('/oncalls', :params => params)
+
+      response[:oncalls][0]
     end
 
     def parse_time(time, nick, extra_args={})
