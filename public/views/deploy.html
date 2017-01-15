@@ -15,7 +15,7 @@
         </a>
       </div>
       <div class="panel-collapse" ng-show="instructions.heroku">
-        <div class="panel-body" ng-show="bot.adapter == 'slack' || bot.adapter == 'slack-rtm'">
+        <div class="panel-body" ng-show="bot.adapter == 'slack'">
           <p class="paragraph">
             To deploy a <strong>slackbot</strong> on heroku, go to the
             <a ng-href="{{dashboard_url}}/settings">dashboard settings</a> and
@@ -30,7 +30,25 @@
           </a>
 
           <p class="paragraph">
-            After clicking save, heroku will restart and launch your bot. It should automatically answer queries in the channels you specified.
+            After applying the changes, heroku will restart and launch your bot. It should automatically answer queries in the channels you specified.
+          </p>
+        </div>
+
+        <div class="panel-body" ng-show="bot.adapter == 'slack-rtm'">
+          <p class="paragraph">
+            To deploy an <strong>slack RTM bot</strong>, go to the
+            <a ng-href="{{dashboard_url}}">dashboard</a> and rescale the application to have a single bot worker, 0 web workers.
+
+            It should look similar to the screenshot below:
+          </p>
+
+          <a ng-href="{{dashboard_url}}" class="paragraph">
+            <img src="pics/irc_example.png" class="img-responsive">
+          </a>
+
+          <p class="paragraph">
+            After clicking apply changes, heroku will restart and launch your bot.
+            Invite the bot to the channels you wish it to join.
           </p>
         </div>
 
@@ -62,7 +80,7 @@
         <div class="panel-body" ng-show="bot.adapter == 'irc'">
           <p class="paragraph">
             To deploy an <strong>irc bot</strong>, go to the
-            <a ng-href="{{dashboard_url}}">dashboard</a> and rescale the application to have a single irc worker and nothing else.
+            <a ng-href="{{dashboard_url}}">dashboard</a> and rescale the application to have a single bot worker, 0 web workers.
 
             It should look similar to the screenshot below:
           </p>
@@ -98,11 +116,11 @@
   </div>
 
   <p class="paragraph">
-    To check if everything worked, ask the bot to say hi: <strong>{{bot.name}}: hi</strong>. You can also see logs <a ng-href="{{papertrail_url}}">here</a>.
+    To check if everything worked, ask the bot for the manual. You can also see logs <a ng-href="{{papertrail_url}}">here</a>.
   </p>
 
   <p class="paragraph">
-    Good luck! If you need this admin interface again, check the README on how to relaunch it!
+    Good luck! When need this admin interface again, check the pagerbot project README on how to relaunch it.
   </p>
 </section>
 
