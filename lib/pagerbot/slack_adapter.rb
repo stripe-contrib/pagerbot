@@ -60,7 +60,7 @@ module PagerBot
              configatron.bot.channels.include?(request[:channel_name])
         return ""
       end
-      text = Pagerbot::Parsing.strip_names(params[:text], [configatron.bot.name])
+      text = PagerBot::Parsing.strip_names(params[:text], [configatron.bot.name])
       return "" if text.nil?
 
       params = event_data request
