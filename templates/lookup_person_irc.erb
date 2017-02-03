@@ -1,5 +1,9 @@
 <% if time.nil? %>
-<%= person.name %> is not scheduled to go on <%= schedule.name %>
+<%= person.name %> is not scheduled to go on <% if schedule.nil? %>
+any schedule
+<% else %>
+<%= schedule.name %>
+<% end %>
 <% elsif time < Time.now %>
 <%= person.name %> is on <%= schedule.name %> now
 <% else %>

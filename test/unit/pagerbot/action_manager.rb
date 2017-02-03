@@ -122,6 +122,19 @@ class ActionManager < Critic::MockedPagerDutyTest
 
         assert_equal("Karl-Aksel Puulmann is on Primary breakage now", response.fetch(:message))
       end
+
+      it 'special case: on schedule `call` should succeed if person is not to go on any schedule' do
+        @pagerduty.expects(:next_oncall)
+          .with('P123456', nil)
+          .returns schedule: nil
+
+        response = @manager.lookup_person({
+          :person => "karl",
+          :schedule => "call"
+        }, event_data)
+
+        assert_equal("Karl-Aksel Puulmann is not scheduled to go on any schedule", response.fetch(:message))
+      end
     end
 
     describe 'who is on schedule X' do

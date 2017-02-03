@@ -115,7 +115,12 @@ module PagerBot
       #   person goes on any on call.
       if query[:schedule] == 'call'
         next_oncall = @pagerduty.next_oncall(person.id, nil)
-        schedule = @pagerduty.find_schedule(next_oncall[:schedule][:name])
+        if next_oncall[:schedule].nil?
+          schedule = nil
+          next_oncall = nil
+        else
+          schedule = @pagerduty.find_schedule(next_oncall[:schedule][:name])
+        end
       else
         schedule = @pagerduty.find_schedule(query[:schedule])
         next_oncall = @pagerduty.next_oncall(person.id, schedule.id)
@@ -126,7 +131,7 @@ module PagerBot
         person: person,
         schedule: schedule
       }
-      if next_oncall
+      unless next_oncall.nil?
         output_data[:time] = person.parse_time(next_oncall[:start])
       end
 

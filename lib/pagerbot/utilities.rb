@@ -107,6 +107,7 @@ module PagerBot::Utilities
   end
 
   def self.display_schedule(schedule, text=nil)
+    return 'any schedule' if schedule.nil?
     url = PagerBot.pagerduty.uri_base+"/schedules##{schedule.id}"
     link_to(url, text || schedule.name)
   end

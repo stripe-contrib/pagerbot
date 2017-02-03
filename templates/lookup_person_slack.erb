@@ -1,5 +1,9 @@
 <% if time.nil? %>
-<%= person.name %> is not scheduled to go on <%= utilities.display_schedule(schedule) %>.
+<%= person.name %> is not scheduled to go on <% if schedule.nil? %>
+any schedule
+<% else %>
+<%= utilities.display_schedule(schedule) %>
+<% end %>
 <% elsif time < Time.now %>
 <%= person.name %> is on <%= utilities.display_schedule(schedule) %> now.
 <% else %>
