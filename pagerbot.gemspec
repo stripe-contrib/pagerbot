@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'configatron'
   spec.add_dependency 'eventmachine' # Used by slack-ruby-client
   spec.add_dependency 'faye-websocket' # Used by slack-ruby-client
-  spec.add_dependency 'mailgun-ruby'
+  spec.add_dependency 'mailgun-ruby', '1.1.2'
   spec.add_dependency 'method_decorators'
   spec.add_dependency 'mongo', '> 2.0'
   spec.add_dependency 'rest-client'
@@ -43,6 +43,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rerun'
+  spec.add_development_dependency 'rerun', '~> 0.10.0'
 
 end
