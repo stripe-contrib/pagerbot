@@ -177,7 +177,7 @@ module PagerBot
     get '/api/users' do
       protected!
       content_type :json
-      store.update_collection! 'users'
+      users, added, removed = store.update_collection! 'users'
 
       {
         users: users,
