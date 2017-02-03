@@ -94,7 +94,7 @@ module PagerBot
     def update_collection!(collection_name, force_reload=false)
       database_collection = db_get_list_of(collection_name)
       if database_collection.empty?
-        PagerBot.log.info("Creating #{collection_name} list for the first time!")
+        logger.info("Creating #{collection_name} list for the first time!")
         pagerduty_collection = pd_list_of(collection_name)
         update_listed(collection_name, pagerduty_collection)
         return [pagerduty_collection, [], []]
@@ -106,11 +106,11 @@ module PagerBot
           pd_list_of(collection_name), database_collection)
 
         update_listed(collection_name, added)
-        PagerBot.log.info("Added to #{collection_name}: #{added.map{|m| m['id']}}")
+        logger.info("Added to #{collection_name}: #{added.map{|m| m['id']}}")
 
         removed_ids = removed.map {|m| m['id']}
         db[collection_name].delete_many(id: {'$in' => removed_ids})
-        PagerBot.log.info("Removed from #{collection_name}: #{removed_ids}")
+        logger.info("Removed from #{collection_name}: #{removed_ids}")
 
         database_collection = db_get_list_of(collection_name)
 

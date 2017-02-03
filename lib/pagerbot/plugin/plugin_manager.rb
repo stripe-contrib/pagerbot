@@ -2,6 +2,8 @@ require_relative './plugin_base'
 
 module PagerBot
   class PluginManager
+    include SemanticLogger::Loggable
+
     attr_reader :loaded, :loaded_plugins
     def initialize(configuration)
       reset(configuration)
@@ -82,8 +84,7 @@ module PagerBot
           "Available plugins: #{available_plugins.inspect}")
       end
       class_name = plugin_class plugin_name
-      PagerBot.log.info("Loading plugin #{plugin_name} from #{class_name}" +
-        " with configuration #{config.inspect}.")
+      logger.info "Loading plugin.", name: plugin_name, class: class_name, config: config
 
       require File.join(File.dirname(__FILE__), plugin_name)
       class_from_string(class_name).new(config)
