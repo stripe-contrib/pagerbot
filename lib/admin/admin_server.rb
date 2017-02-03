@@ -12,6 +12,8 @@ include Mongo
 
 module PagerBot
   class AdminPage < Sinatra::Base
+    include SemanticLogger::Loggable
+
     set :public_folder, 'public'
     set :bind, '0.0.0.0'
     set :logging, true
@@ -47,7 +49,9 @@ module PagerBot
       def can_connect_to_pd(pagerduty=nil)
         pagerduty = store.get_pagerduty
         begin
-          pagerduty.get('/users')
+          logger.measure_info "Checking pagerduty connectivity." do
+            pagerduty.get('/users')
+          end
           true
         rescue
           false
@@ -146,8 +150,10 @@ module PagerBot
     post '/plugins' do
       protected!
       content_type :json
-      # puts request.env["rack.input"].read
       plugins = json_args(request).fetch(:plugins)
+
+      logger.info "Updating enabled plugins.", plugins
+
       store.update_listed('plugins', plugins, :name)
 
       {
@@ -172,7 +178,11 @@ module PagerBot
       protected!
       content_type :json
 
-      users, added, removed = store.update_collection! 'users'
+      users, added, removed = logger.measure_info "Fetched users from pagerduty." do
+        store.update_collection! 'users'
+      end
+
+      logger.info "User stats:", total: users.length, added: added.length, removed: removed.length
       {
         users: users,
         pagerduty: store.get_or_create('pagerduty'),

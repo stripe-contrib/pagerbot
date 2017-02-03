@@ -4,6 +4,8 @@ require 'slack-ruby-client'
 
 module PagerBot
   class SlackRTMAdapter
+    include SemanticLogger::Loggable
+
     def self.run!
       PagerBot::SlackRTMAdapter.new().run!
     end
@@ -54,6 +56,7 @@ module PagerBot
       text = PagerBot::Parsing.strip_names message.text, usernames
       return if text.nil? # Not addressed to this user.
 
+      logger.info "Received a query.", nick: usernames, query: text
       response = PagerBot.process text, extra_data
       if response[:private_message]
         dm_channel = "@#{find_user(message.user).name}"
@@ -64,6 +67,7 @@ module PagerBot
     end
 
     def send_message(message, channel)
+      logger.info "Responding.", channel: channel, text: message
       @client.web_client.chat_postMessage channel: channel, text: message, as_user: true, unfurl_links: false
     end
   end

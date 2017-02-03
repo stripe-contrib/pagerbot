@@ -6,22 +6,22 @@ require 'rest-client'
 
 module PagerBot
   class SlackAdapter < Sinatra::Base
+    include SemanticLogger::Loggable
+
     def emoji
       configatron.bot.slack.emoji || ":frog:"
     end
 
     def send_private_message(message, user_id)
-      data = {
+      request = {
         username: configatron.bot.name,
         icon_emoji: emoji,
         text: message,
         channel: user_id,
         token: configatron.bot.slack.api_token
       }
-      PagerBot.log.info(data.inspect)
-
-      resp = RestClient.post "https://slack.com/api/chat.postMessage", data
-      PagerBot.log.info resp
+      logger.info "Sending private message.", request.except(:token, :icon_emoji)
+      RestClient.post "https://slack.com/api/chat.postMessage", request
     end
 
     def make_reply(answer, event_data)
@@ -42,7 +42,6 @@ module PagerBot
 
     def event_data(request)
       {
-        token: request[:token],
         nick: request[:user_name],
         channel_name: request[:channel_name],
         text: request[:text],
@@ -52,7 +51,6 @@ module PagerBot
     end
 
     post '/' do
-      PagerBot.log.info event_data(request)
       if configatron.bot.slack.webhook_token
         return "" unless request[:token] == configatron.bot.slack.webhook_token
       end
@@ -63,9 +61,10 @@ module PagerBot
       text = PagerBot::Parsing.strip_names(params[:text], [configatron.bot.name])
       return "" if text.nil?
 
-      params = event_data request
-      answer = PagerBot.process(params[:text], params)
-      make_reply answer, params
+      request_data = event_data request
+      answer = PagerBot.process(request_data[:text], request_data)
+      logger.info "Received a query:", request_data, answer: answer
+      make_reply answer, request_data
     end
 
     get '/ping' do
