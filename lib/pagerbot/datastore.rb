@@ -1,6 +1,8 @@
 # class for reading from the database and pagerduty
 module PagerBot
   class DataStore
+    include SemanticLogger::Loggable
+
     def db
       return @db unless @db.nil?
       Mongo::Logger.logger.level = ::Logger::INFO
@@ -24,15 +26,17 @@ module PagerBot
     # get list of collection objects (schedules, users) from pagerduty
     def pd_list_of(collection_name, pagerduty=nil)
       pagerduty ||= get_pagerduty
-      PagerBot::Utilities
-        .paginate('/'+collection_name, collection_name.to_sym, pagerduty)
-        .values
-        .sort_by { |u| u['name'] }
-        .map do |member|
-          member.delete('_id')
-          member["aliases"] ||= []
-          ActiveSupport::HashWithIndifferentAccess.new member
-        end
+      logger.measure_info "Fetching collection from pagerduty.", collection_name: collection_name do
+        PagerBot::Utilities
+          .paginate('/'+collection_name, collection_name.to_sym, pagerduty)
+          .values
+          .sort_by { |u| u['name'] }
+          .map do |member|
+            member.delete('_id')
+            member["aliases"] ||= []
+            ActiveSupport::HashWithIndifferentAccess.new member
+          end
+      end
     end
 
     def db_get_list_of(collection_name, order_field='name')
@@ -109,6 +113,12 @@ module PagerBot
         PagerBot.log.info("Removed from #{collection_name}: #{removed_ids}")
 
         database_collection = db_get_list_of(collection_name)
+
+        logger.info "Refreshed collection.",
+          collection_name: collection_name,
+          total: users.length,
+          added: added.length,
+          removed: removed.length
       end
 
       [database_collection, added, removed]

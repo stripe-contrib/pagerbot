@@ -177,12 +177,8 @@ module PagerBot
     get '/users' do
       protected!
       content_type :json
+      store.update_collection! 'users'
 
-      users, added, removed = logger.measure_info "Fetched users from pagerduty." do
-        store.update_collection! 'users'
-      end
-
-      logger.info "User stats:", total: users.length, added: added.length, removed: removed.length
       {
         users: users,
         pagerduty: store.get_or_create('pagerduty'),
