@@ -1,8 +1,7 @@
 module PagerBot; end
 
-require 'logger'
 require 'configatron'
-# require_relative '../config'
+require 'semantic_logger'
 
 require_relative './pagerbot/utilities'
 require_relative './pagerbot/template'
@@ -47,11 +46,7 @@ module PagerBot
 
   def self.log
     return @logger unless @logger.nil?
-    @logger = Logger.new STDERR
-    @logger.level = Logger::INFO
-    @logger.formatter = proc { |severity, datetime, progname, msg|
-      "#{severity} #{caller[4]}: #{msg}\n"
-    }
+    @logger = SemanticLogger['PagerBot']
     @logger
   end
 
@@ -95,7 +90,9 @@ if __FILE__ == $0
   is_admin = ARGV.first == 'admin'
   is_admin ||= ARGV.first == 'web' && !to_boolean(ENV['DEPLOYED'] || "")
 
-  PagerBot.log.info("Is_admin is "+is_admin.to_s)
+  SemanticLogger.add_appender(io: STDERR, formatter: :color)
+
+  PagerBot.log.info("Starting application", is_admin: is_admin, argv: ARGV)
   if is_admin
     PagerBot::AdminPage.run!
   else
