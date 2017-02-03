@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'method_decorators'
   spec.add_dependency 'mongo', '> 2.0'
   spec.add_dependency 'rest-client'
+  spec.add_dependency 'semantic_logger'
   spec.add_dependency 'sinatra'
   spec.add_dependency 'slack-ruby-client'
   spec.add_dependency 'thin'
