@@ -2,6 +2,9 @@ module PagerBot
   # This class takes action/prepares response based on parsed queries.
   class ActionManager
     extend MethodDecorators
+
+    include SemanticLogger::Loggable
+
     attr_reader :pagerduty, :plugin_manager, :current_adapter
 
     def initialize(options)
@@ -31,7 +34,8 @@ module PagerBot
             message << "\nSyntax: #{info[:syntax].first}"
           end
           response = {message: message}
-          PagerBot.log.error("Error in dispatch:\n#{e.message}\n#{e.backtrace}")
+
+          logger.error "Failed to process message.", e
         end
       else
         begin
@@ -42,7 +46,7 @@ module PagerBot
           response = self.send method, parsed_query, event_data
         rescue Exception => e
           response = {message: "Hmm, that didn't seem to work: #{e.message}"}
-          PagerBot.log.error("Error in dispatch:\n#{e.message}\n#{e.backtrace}")
+          logger.error "Failed to process message.", e
         end
       end
       response
