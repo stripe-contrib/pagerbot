@@ -80,8 +80,8 @@ module PagerBot
 
     def self.load_plugin(plugin_name, config={})
       unless available_plugins.include? plugin_name
-        raise ArgumentError.new("No plugin named #{plugin_name} found.\n"+
-          "Available plugins: #{available_plugins.inspect}")
+        logger.warn "Plugin not listed as available. Skipping.", name: plugin_name, config: config, available_plugins: available_plugins
+        return
       end
       class_name = plugin_class plugin_name
       logger.info "Loading plugin.", name: plugin_name, class: class_name, config: config
