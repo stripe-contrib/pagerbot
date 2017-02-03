@@ -64,7 +64,7 @@ module PagerBot
       File.new('public/index.html').readlines
     end
 
-    get '/pagerduty' do
+    get '/api/pagerduty' do
       protected!
       content_type :json
       ({
@@ -73,7 +73,7 @@ module PagerBot
       }).to_json
     end
 
-    post '/pagerduty' do
+    post '/api/pagerduty' do
       protected!
       content_type :json
       settings = json_args request
@@ -104,14 +104,14 @@ module PagerBot
       hipchat: {}
     }
 
-    get '/bot' do
+    get '/api/bot' do
       protected!
       content_type :json
 
       store.get_or_create('bot', bot_defaults).to_json
     end
 
-    post '/bot' do
+    post '/api/bot' do
       protected!
       content_type :json
 
@@ -123,7 +123,7 @@ module PagerBot
       }.to_json
     end
 
-    get '/plugins' do
+    get '/api/plugins' do
       protected!
       content_type :json
 
@@ -147,7 +147,7 @@ module PagerBot
       }.to_json
     end
 
-    post '/plugins' do
+    post '/api/plugins' do
       protected!
       content_type :json
       plugins = json_args(request).fetch(:plugins)
@@ -164,7 +164,7 @@ module PagerBot
     end
 
     # Alias api methods
-    post '/normalize_strings' do
+    post '/api/normalize_strings' do
       protected!
       content_type :json
 
@@ -174,7 +174,7 @@ module PagerBot
       }.to_json
     end
 
-    get '/users' do
+    get '/api/users' do
       protected!
       content_type :json
       store.update_collection! 'users'
@@ -187,7 +187,7 @@ module PagerBot
       }.to_json
     end
 
-    post '/users' do
+    post '/api/users' do
       protected!
       content_type :json
       added_users = json_args(request).fetch(:users)
@@ -202,7 +202,7 @@ module PagerBot
       }.to_json
     end
 
-    get '/schedules' do
+    get '/api/schedules' do
       protected!
       content_type :json
 
@@ -215,7 +215,7 @@ module PagerBot
       }.to_json
     end
 
-    post '/schedules' do
+    post '/api/schedules' do
       protected!
       content_type :json
       added_schedules = json_args(request).fetch(:schedules)

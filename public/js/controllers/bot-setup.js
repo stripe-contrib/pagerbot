@@ -23,7 +23,7 @@ angular.module('pagerbot-admin')
       $scope.status = 'saving';
       $scope.validateSlackConnection(bot_info);
 
-      $http.post('/bot', bot_info)
+      $http.post('/api/bot', bot_info)
         .success(function(response) {
           $rootScope.bot = response.saved;
         });
@@ -61,7 +61,7 @@ angular.module('pagerbot-admin')
           return;
         }
         $scope.auth.can_connect = 'validating';
-        $http.get("https://slack.com/api/auth.test?token="+token)
+        $http.get('https://slack.com/api/auth.test?token='+token)
           .success(function(response) {
             if (response.ok) {
               $scope.auth.can_connect = 'yes';

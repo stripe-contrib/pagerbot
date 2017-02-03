@@ -6,7 +6,7 @@ angular.module('pagerbot-admin')
       return r == $location.path();
     };
 
-    $http.get('/bot').success(function(response) {
+    $http.get('/api/bot').success(function(response) {
       console.log("Bot info:", response);
       $rootScope.bot = response;
     });

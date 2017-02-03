@@ -14,7 +14,7 @@ angular.module('pagerbot-admin')
       $scope.status = 'saving';
       $rootScope.can_connect = false;
 
-      $http.post('/pagerduty', pagerduty)
+      $http.post('/api/pagerduty', pagerduty)
         .success(function(response) {
           $rootScope.pagerduty = response.saved;
           $rootScope.can_connect = response.can_connect;

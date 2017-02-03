@@ -2,7 +2,7 @@
 
 angular.module('pagerbot-admin')
   .factory('pagerduty_promise', function($http) {
-    return $http.get('/pagerduty');
+    return $http.get('/api/pagerduty');
   })
   .factory('alias_manager', function($http, $delayed_watch, $filter, ngTableParams) {
     var setupTable = function(collection) {
@@ -56,7 +56,7 @@ angular.module('pagerbot-admin')
       service.save = function(collection) {
         console.log("Saving", collection_name, collection);
 
-        $http.post('/'+collection_name, collection)
+        $http.post('/api/'+collection_name, collection)
           .success(function(response) {
             console.debug("Save result:", response.saved);
             $scope[collection_name] = response.saved;
@@ -73,7 +73,7 @@ angular.module('pagerbot-admin')
           member.aliases.push({ name: name, automatic: false });
 
           // slightly racy
-          $http.post('/normalize_strings', {strings: [name]})
+          $http.post('/api/normalize_strings', {strings: [name]})
             .success(function(strings) {
               member.aliases[index].name = strings.strings[0];
             });
@@ -108,7 +108,7 @@ angular.module('pagerbot-admin')
 
         console.log("Mass adding", expression, "for", selected_members, names, collection());
         // slightly racy
-        $http.post('/normalize_strings', {strings: names})
+        $http.post('/api/normalize_strings', {strings: names})
           .success(function(result) {
             console.debug("Normalization results:", result);
             _.each(_.zip(result.strings, selected_members), function(pair) {

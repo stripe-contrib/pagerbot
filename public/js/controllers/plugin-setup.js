@@ -15,7 +15,7 @@ angular.module('pagerbot-admin')
       console.log("Saving plugin settings:", plugin_info);
       $scope.status = 'saving';
 
-      $http.post('/plugins', plugin_info)
+      $http.post('/api/plugins', plugin_info)
         .success(function(response) {
           $scope.plugins = response.saved;
         });
