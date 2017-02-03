@@ -116,7 +116,7 @@ module PagerBot
 
         logger.info "Refreshed collection.",
           collection_name: collection_name,
-          total: users.length,
+          total: database_collection.length,
           added: added.length,
           removed: removed.length
       end
