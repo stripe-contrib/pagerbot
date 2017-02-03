@@ -56,8 +56,9 @@
     <span ng-show="auth.can_connect == 'no'" class="status-label status-label-bad">Auth check failed ({{ auth.error_response.error }})</span>
     <span ng-show="auth.can_connect == 'yes'" class="status-label status-label-good">Auth check succeeded (team {{ auth.success_response.team }})</span>
     <span class="input-description">
-      In Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
-      select "Bots", and add a new configuration. Paste the API Token into the field above.
+      In Slack <a href="https://slack.com/services/new/bot">create a new bot user</a> under Manage → Custom Integrations when logged in as an admin.
+      <br>
+      Paste the API Token into the field above.
     </span>
     <span class="input-description">
       Customization of the bot name and avatar should be done via that page and once the bot can be invited to relevant channels.
@@ -68,8 +69,9 @@
     <label class="control-label">Webhook token:</label>
     <input ng-model="bot.slack.webhook_token" class="form-control short" />
     <span class="input-description">
-      In Slack, go to <a href="https://slack.com/apps/manage/custom-integrations">Custom Integrations</a>,
-      select "Outgoing WebHooks", and add a new configuration.
+      In Slack <a href="https://slack.com/services/new/outgoing-webhook">create a new outgoing web hook</a>
+      under Manage → Custom Integrations when logged in as an admin.
+
       Set Channel to <span class="highlight">Any</span>, Trigger word(s) to <span class="highlight">{{ bot.name }}</span>, and URL(s) to <span class="highlight">{{ thisdomain }}</span>,
       then paste the Token into the field above.
     </span>
