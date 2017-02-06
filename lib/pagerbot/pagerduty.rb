@@ -10,6 +10,8 @@ module PagerBot
   class PagerDuty
     attr_reader :users, :schedules
 
+    include SemanticLogger::Loggable
+
     def initialize(opts = {})
       pd_config = opts
       @subdomain = pd_config.fetch(:subdomain)
@@ -28,9 +30,6 @@ module PagerBot
       @resource = RestClient::Resource.new(api_base,
         :headers => headers_hash)
     end
-    def log
-      PagerBot.log
-    end
 
     def api_base
       "https://#{@subdomain}.pagerduty.com/api/v1"
@@ -47,13 +46,13 @@ module PagerBot
     def get(url, opts = {})
       begin
         resp = @resource[url].get(opts)
-        answer = JSON.parse(resp, :symbolize_names => true)
-        log.debug("GET #{url}, opts=#{opts.inspect}, response=#{answer.inspect}")
-        answer
+        json_response = JSON.parse(resp, :symbolize_names => true)
+        logger.debug("PagerDuty GET", url: url, options: opts, response: json_response)
+        json_response
       rescue Exception => e
         params = opts[:params] ? "?#{opts[:params].inspect}" : ""
-        log.error "Failed to get url: #{url}.\nOptions: #{opts.inspect}  #{@resource}"
-        raise RuntimeError.new("Problem talking to PagerDuty: #{e.message}\n"+
+        logger.error("PagerDuty GET failed", {url: url, options: options}, e)
+        raise RuntimeError.new("Problem talking to PagerDuty: #{e.message}\n" +
           "Request was GET #{url}#{params}")
       end
     end
@@ -61,14 +60,12 @@ module PagerBot
     def post(url, payload, opts = {})
       begin
         resp = @resource[url].post(payload, opts)
-        answer = JSON.parse(resp, :symbolize_names => true)
-        log.debug("POST #{url}, payload=#{payload.inspect}, "+
-          "opts=#{opts.inspect}, response=#{answer.inspect}")
+        json_response = JSON.parse(resp, :symbolize_names => true)
+        logger.debug("PagerDuty POST", url: url, payload: payload, options: opts, response: json_response)
         answer
       rescue Exception => e
         params = opts[:params] ? "?#{opts[:params].inspect}" : ""
-        log.error("Failed to post to url: #{url}.\nPayload: #{payload.inspect}"+
-          "\nOptions: #{opts.inspect} #{@resource}")
+        logger.error("PagerDuty POST failed", {url: url, payload: payload, options: options}, e)
         raise RuntimeError.new("Problem talking to PagerDuty: #{e.message}\n"+
           "Request was POST #{url}#{params} / #{payload.inspect}")
       end
