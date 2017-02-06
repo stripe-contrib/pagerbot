@@ -20,7 +20,8 @@ module PagerBot
         @loaded = true
         @configuration.each do |plugin_name, config|
           plugin_name = plugin_name.to_s
-          @loaded_plugins[plugin_name] = self.class.load_plugin(plugin_name, config)
+          plugin = self.class.load_plugin(plugin_name, config)
+          @loaded_plugins[plugin_name] = plugin unless plugin.nil?
         end
       end
     end
