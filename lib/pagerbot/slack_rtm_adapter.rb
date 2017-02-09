@@ -20,12 +20,29 @@ module PagerBot
     end
 
     def run!
+      @client.on :hello do
+        logger.info "Successfully connected to chat.", {
+          adapter: 'Slack RTM',
+          nick: @client.self.name,
+          teamname: @client.team.name,
+          domain: "https://#{@client.team.domain}.slack.com"
+        }
+      end
+
       @client.on :message do |data|
         if data.type == 'message' && data.subtype == 'message_changed'
           process_message data.message, data.channel
         elsif data.type == 'message' && data.subtype.nil?
           process_message data, data.channel
         end
+      end
+
+      @client.on :close do |data|
+        logger.info "Closing connection to chat.", adapter: 'Slack RTM', data: data
+      end
+
+      @client.on :closed do |data|
+        logger.info "Closed connection to chat.", adapter: 'Slack RTM', data: data
       end
       @client.start!
     end
