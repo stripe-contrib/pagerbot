@@ -62,6 +62,7 @@ To deploy it to heroku, git clone, create a heroku app and push to launch it.
 ```bash
 heroku create
 heroku addons:add mongolab:sandbox
+heroku addons:add papertrail
 git push heroku master
 ```
 
