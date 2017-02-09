@@ -11,11 +11,7 @@ module PagerBot
     end
 
     def initialize
-      # Load slack API token
-      Slack.configure do |config|
-        config.token = configatron.bot.slack.api_token
-      end
-      @client = Slack::RealTime::Client.new
+      @client = Slack::RealTime::Client.new(token: configatron.bot.slack.api_token)
       @user_cache = {}
     end
 
