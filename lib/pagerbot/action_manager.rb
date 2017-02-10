@@ -60,16 +60,22 @@ module PagerBot
     # because who doesn't like one-liners. Feel free to refactor!
     +PagerBot::Utilities::DispatchMethod
     def list_schedules(query, event_data={})
-      msg = "Here are the schedules I know about (schedules in the same line are synonyms):\n" +
-        @pagerduty.schedules.list.map { |v| Utilities.pluck('name', v.aliases).sort.join(', ') }.sort.join("\n")
-      { private_message: msg }
+      message = render('list', {
+        collection_name: 'schedules',
+        collection: @pagerduty.schedules.list,
+        aliases_extractor: lambda { |member| Utilities.pluck('name', member.aliases).sort }
+      })
+      { private_message: message }
     end
 
     +PagerBot::Utilities::DispatchMethod
     def list_people(query, event_data={})
-      msg = "Here are the people I know about (people in the same line are synonyms):\n" +
-        @pagerduty.users.list.map { |v| Utilities.pluck('name', v.aliases).sort.join(', ') }.sort.join("\n")
-      { private_message: msg }
+      message = render('list', {
+        collection_name: 'people',
+        collection: @pagerduty.users.list,
+        aliases_extractor: lambda { |member| Utilities.pluck('name', member.aliases).sort }
+      })
+      { private_message: message }
     end
 
     +PagerBot::Utilities::DispatchMethod

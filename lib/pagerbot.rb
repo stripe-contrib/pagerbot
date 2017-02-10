@@ -52,7 +52,6 @@ module PagerBot
 
   # Load configuration saved into the database by AdminPage
   # into configatron, also adding schedules and users.
-  # Dark magic lurks here!
   def self.load_configuration_from_db!
     store = DataStore.new
     settings = {}
@@ -77,7 +76,6 @@ module PagerBot
     # this will recreate the action_manager
     load_configuration_from_db!
     PagerBot.plugin_manager.load_plugins
-    # log.info("Reload configuration.\nNew configuration: #{configatron.to_h}")
   end
 end
 
@@ -93,11 +91,11 @@ if __FILE__ == $0
   SemanticLogger.default_level = ENV.fetch('LOG_LEVEL', 'info').downcase
   SemanticLogger.add_appender(io: STDERR, formatter: :color)
 
-  PagerBot.log.info("Starting application", is_admin: is_admin, adapter: configatron.bot.adapter, argv: ARGV)
   if is_admin
     PagerBot::AdminPage.run!
   else
     PagerBot.reload_configuration!
+    PagerBot.log.info("Starting application", is_admin: is_admin, adapter: configatron.bot.adapter, argv: ARGV)
 
     if ARGV.include?('web') || ['slack', 'hipchat'].include?(configatron.bot.adapter)
       if ARGV.include?('slack') || configatron.bot.adapter == 'slack'

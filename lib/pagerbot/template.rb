@@ -6,7 +6,7 @@ module PagerBot::Template
       @_template_name = template_name
       hash.each do |key, value|
         singleton_class.send(:define_method, key) { value }
-      end 
+      end
     end
 
     def render(adapter=nil)
@@ -39,10 +39,6 @@ module PagerBot::Template
 
     templates_dir = File.expand_path(
       File.join(File.dirname(__FILE__), "../../templates"))
-
-    template_file_list = Dir.entries(templates_dir)
-    PagerBot.log.debug("Template files: #{template_file_list}")
-
     file_path = File.join(templates_dir, template_name+".erb")
 
     @@cache[template_name] = File.read(file_path)
