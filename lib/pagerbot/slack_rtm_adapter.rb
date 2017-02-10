@@ -11,8 +11,13 @@ module PagerBot
     end
 
     def initialize
-      slack_logger = SemanticLogger::Logger.new('Slack', :warn)
-      @client = Slack::RealTime::Client.new(token: configatron.bot.slack.api_token, logger: slack_logger)
+      @client = Slack::RealTime::Client.new({
+        token: configatron.bot.slack.api_token,
+        logger: SemanticLogger::Logger.new('Slack', :warn),
+        # In large organizations, parsing the initial payloads can take a while, optimize for that.
+        simple_latest: true, # Don't include timestamps for messages not the newest.
+        no_unreads: true # Don't fetch messages since last restart.
+      })
       @user_cache = {}
     end
 
