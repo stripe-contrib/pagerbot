@@ -92,7 +92,7 @@ if __FILE__ == $0
 
   SemanticLogger.add_appender(io: STDERR, formatter: :color)
 
-  PagerBot.log.info("Starting application", is_admin: is_admin, adapter: congigatron.bot.adapter, argv: ARGV)
+  PagerBot.log.info("Starting application", is_admin: is_admin, adapter: configatron.bot.adapter, argv: ARGV)
   if is_admin
     PagerBot::AdminPage.run!
   else

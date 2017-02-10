@@ -10,7 +10,7 @@ module PagerBot::Plugins
     def self.manual
       {
         description: "Add alias for user or schedule",
-        syntax: ["alias FIELDVALUE as NEW_ALIAS"],
+        syntax: ["alias USER_OR_SCHEDULE as NEW_ALIAS"],
         examples: [
           "alias karl@mycompany.com as thebestkarl",
           "alias PIBRSYV as triage"
@@ -21,10 +21,10 @@ module PagerBot::Plugins
     def parse(query)
       return unless query[:command] == "alias"
 
-      parse_stage = :field_value
-      result = {
-        field_value: [],
-        new_alias: [],
+      parse_stage = :searched_alias
+      names = {
+        searched_alias: [],
+        new_alias: []
       }
 
       query[:words].each do |word|
@@ -32,38 +32,39 @@ module PagerBot::Plugins
         when 'as'
           parse_stage = :new_alias
         else
-          result[parse_stage] << word
+          names[parse_stage] << word
         end
       end
 
-      join_all(result)
+      names.each do |stage, nameparts|
+        names[stage] = nameparts.join(' ')
+      end
     end
 
-    def matches_in(collection, expected)
+    def matches_in(collection, nameCandidate)
       fields_to_scan = [:email, :name, :id]
 
-      normalized = PagerBot::Utilities.normalize(expected)
+      normalizedCandidate = PagerBot::Utilities.normalize(nameCandidate)
 
-      collection.list.select do |member|
+      collection.select do |member|
         fields_to_scan.any? do |field|
-          member[field] && member.normalized(field) == normalized
+          member[field] && PagerBot::Utilities.normalize(member[field]) == normalizedCandidate
         end
       end
     end
 
     +PagerBot::Utilities::DispatchMethod
     def dispatch(query, event_data)
-      users_matches = matches_in(pagerduty.users, query[:field_value])
-      schedule_matches = matches_in(pagerduty.schedules, query[:field_value])
+      users_matches = matches_in(pagerduty.users.list, query[:searched_alias])
+      schedule_matches = matches_in(pagerduty.schedules.list, query[:searched_alias])
       new_alias = PagerBot::Utilities.normalize(query[:new_alias])
 
-      # if no matches
       if users_matches.empty? && schedule_matches.empty?
-        return "Could not find #{query[:field_value]}."
+        return "Could not find user or schedule #{query[:searched_alias]}."
       end
-      # if too many matches
+      # Ambigious matches.
       if users_matches.length + schedule_matches.length > 1
-        return "Field #{query[:field_value]} is ambiguous."
+        return "Field #{query[:searched_alias]} is ambiguous."
       end
       # base case, only one find!
       store = PagerBot::DataStore.new

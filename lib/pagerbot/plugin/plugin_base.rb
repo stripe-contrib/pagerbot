@@ -51,14 +51,6 @@ module PagerBot
       plugin
     end
 
-    def join_all(hash)
-      hash.each do |key, value|
-        if value.is_a? Array
-          hash[key] = value.join(' ')
-        end
-      end
-    end
-
     def log
       PagerBot.log
     end
