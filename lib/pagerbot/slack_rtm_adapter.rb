@@ -11,14 +11,14 @@ module PagerBot
     end
 
     def initialize
-      @client = Slack::RealTime::Client.new(token: configatron.bot.slack.api_token)
+      slack_logger = SemanticLogger::Logger.new('Slack', :warn)
+      @client = Slack::RealTime::Client.new(token: configatron.bot.slack.api_token, logger: slack_logger)
       @user_cache = {}
     end
 
     def run!
       @client.on :hello do
         logger.info "Successfully connected to chat.", {
-          adapter: 'Slack RTM',
           nick: @client.self.name,
           teamname: @client.team.name,
           domain: "https://#{@client.team.domain}.slack.com"
@@ -34,11 +34,11 @@ module PagerBot
       end
 
       @client.on :close do |data|
-        logger.info "Closing connection to chat.", adapter: 'Slack RTM', data: data
+        logger.info "Closing connection to chat.", data: data
       end
 
       @client.on :closed do |data|
-        logger.info "Closed connection to chat.", adapter: 'Slack RTM', data: data
+        logger.info "Closed connection to chat.", data: data
       end
       @client.start!
     end
