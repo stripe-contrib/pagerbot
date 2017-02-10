@@ -25,7 +25,6 @@ module PagerBot::Plugins
       result = {
         field_value: [],
         new_alias: [],
-
       }
 
       query[:words].each do |word|

@@ -92,7 +92,7 @@ if __FILE__ == $0
 
   SemanticLogger.add_appender(io: STDERR, formatter: :color)
 
-  PagerBot.log.info("Starting application", is_admin: is_admin, argv: ARGV)
+  PagerBot.log.info("Starting application", is_admin: is_admin, adapter: congigatron.bot.adapter, argv: ARGV)
   if is_admin
     PagerBot::AdminPage.run!
   else
@@ -110,7 +110,7 @@ if __FILE__ == $0
       PagerBot::IrcAdapter.run!
     else
       desiredAdapter = ARGV.first || configatron.bot.adapter
-      puts("Could not find adapter #{desiredAdapter}.\n" \
+      PagerBot.log.error("Could not find adapter #{desiredAdapter}.\n" \
         "It must be one of 'irc', 'slack', 'slack-rtm' or 'hipchat'.\n\n" \
         "To configure the bot, run this command again with `admin` as the first argument.")
       exit 1

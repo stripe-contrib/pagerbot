@@ -5,7 +5,7 @@ class CallPlugin < Critic::MockedPagerDutyTest
     PagerBot::Parsing.parse(botname+": "+text, botname, pm)
   end
 
-  before do 
+  before do
     @config = {
       call: {
         keyword: '911',
@@ -24,7 +24,6 @@ class CallPlugin < Critic::MockedPagerDutyTest
 
     am = PagerBot.action_manager({:pagerduty => @pagerduty_settings, :bot => {:name => "pagerbot"}})
     am.stubs(:plugin_manager).returns(@plugin_manager)
-
   end
 
   describe "call plugin" do
