@@ -10,7 +10,7 @@ module PagerBot::Plugins
     def self.manual
       {
         description: "Add alias for user or schedule",
-        syntax: ["alias USER_OR_SCHEDULE as NEW_ALIAS"],
+        syntax: ["alias PERSON_OR_SCHEDULE as NEW_ALIAS"],
         examples: [
           "alias karl@mycompany.com as thebestkarl",
           "alias PIBRSYV as triage"

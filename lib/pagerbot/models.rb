@@ -53,6 +53,7 @@ module PagerBot
 
         @list.each do |member|
           add_index(member.id, member)
+          add_index(member.name, member)
 
           # add email as an index for users
           if member.is_a?(User)
