@@ -90,6 +90,7 @@ if __FILE__ == $0
   is_admin = ARGV.first == 'admin'
   is_admin ||= ARGV.first == 'web' && !to_boolean(ENV['DEPLOYED'] || "")
 
+  SemanticLogger.default_level = ENV.fetch('LOG_LEVEL', 'info').downcase
   SemanticLogger.add_appender(io: STDERR, formatter: :color)
 
   PagerBot.log.info("Starting application", is_admin: is_admin, adapter: configatron.bot.adapter, argv: ARGV)
