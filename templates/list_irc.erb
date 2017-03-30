@@ -1,0 +1,8 @@
+Here are the <%= collection_name %> I know about (<%= collection_name %> in the same line are synonyms):
+<% collection.each do |member| %>
+<% aliases = aliases_extractor.call(member) %>
+<%= member[:name] %> (id: <%= member[:id] %>)<% unless aliases.empty? %>
+: <%= aliases.join(', ') %>
+<% end %>
+
+<% end %>
