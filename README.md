@@ -45,7 +45,7 @@ Easiest way to run pagerbot locally is via docker and [docker-compose](https://d
 
 ```bash
 # Running tests
-docker-compose run pagerbot rake tests
+docker-compose run pagerbot rake test
 
 # Opening the admin interface to configure the bot. Accessible via `localhost:4567`
 # The interface will auto-reload on file changes (though html/javascript may be cached).
